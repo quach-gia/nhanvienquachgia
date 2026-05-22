@@ -147,6 +147,7 @@ body{font-family:-apple-system,'Segoe UI',sans-serif;background:var(--bg);color:
     <div class="subtitle">Hệ thống nhân viên</div>
     <div class="form-group"><label>Mã nhân viên</label><input type="text" id="loginEmpId" placeholder="VD: PTNV016" autocomplete="off"></div>
     <div class="form-group"><label>Mật khẩu</label><input type="password" id="loginPassword" placeholder="Mật khẩu"></div>
+    <div style="text-align:center;font-size:12px;color:#888;margin-bottom:12px"><i class="fas fa-lock" style="font-size:11px"></i> Mật khẩu sẽ được lưu tự động 密碼將自動保存</div>
     <button class="login-btn" onclick="doLogin()"><i class="fas fa-sign-in-alt"></i> Đăng nhập</button>
     <div class="error-msg" id="loginError"></div>
   </div>
@@ -264,9 +265,12 @@ function apiCall(params,callback){
   var fullUrl=url+'?'+qs;
   var opts=qs.length>1500?{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:qs,redirect:'follow'}:{redirect:'follow'};
   var fetchUrl=qs.length>1500?url:fullUrl;
+  var done=false;
+  var timer=setTimeout(function(){if(!done){done=true;console.warn('API timeout 60s for action:',params.action);callback({success:false,error:'Timeout 60s - thử lại sau'});}},60000);
   fetch(fetchUrl,opts).then(function(r){return r.text();}).then(function(txt){
+    if(done)return;done=true;clearTimeout(timer);
     try{callback(JSON.parse(txt));}catch(e){console.warn('API parse error:',txt.substring(0,300));callback({success:false,error:'Lỗi server response'});}
-  }).catch(function(err){console.warn('API error:',err);callback({success:false,error:'Lỗi kết nối: '+err.message});});
+  }).catch(function(err){if(done)return;done=true;clearTimeout(timer);console.warn('API error:',err);callback({success:false,error:'Lỗi kết nối: '+err.message});});
 }
 function showToast(msg){var t=document.getElementById('toast');t.textContent=msg;t.style.display='block';setTimeout(function(){t.style.display='none';},3000);}
 
@@ -282,11 +286,12 @@ function doLogin(){
   apiCall({action:'login',empId:empId,password:password},function(res){
     if(done)return;done=true;clearTimeout(timer);
     btn.disabled=false;btn.innerHTML='<i class="fas fa-sign-in-alt"></i> Đăng nhập';
-    if(res.success){currentUser={empId:res.empId,name:res.name,role:res.role};localStorage.setItem('qg_user',JSON.stringify(currentUser));showMainApp();}
+    if(res.success){currentUser={empId:res.empId,name:res.name,role:res.role};localStorage.setItem('qg_user',JSON.stringify(currentUser));localStorage.setItem('qg_saved_login',JSON.stringify({empId:empId,password:password}));showMainApp();}
     else{showLoginError(res.error||'Lỗi không xác định');}
   });
 }
-function doLogout(){currentUser=null;localStorage.removeItem('qg_user');document.getElementById('loginPage').style.display='flex';document.getElementById('mainApp').style.display='none';document.getElementById('loginEmpId').value='';document.getElementById('loginPassword').value='';}
+function doLogout(){currentUser=null;localStorage.removeItem('qg_user');document.getElementById('loginPage').style.display='flex';document.getElementById('mainApp').style.display='none';document.getElementById('loginEmpId').value='';document.getElementById('loginPassword').value='';restoreSavedLogin();}
+function restoreSavedLogin(){try{var s=localStorage.getItem('qg_saved_login');if(s){var d=JSON.parse(s);document.getElementById('loginEmpId').value=d.empId||'';document.getElementById('loginPassword').value=d.password||'';}}catch(e){}}
 function showLoginError(msg){var el=document.getElementById('loginError');el.textContent=msg;el.style.display='block';setTimeout(function(){el.style.display='none';},3000);}
 function showMainApp(){
   document.getElementById('loginPage').style.display='none';
@@ -1440,13 +1445,13 @@ function loadPayroll(){
       document.getElementById('payrollContent').innerHTML='<div class="no-data" style="color:var(--danger)">'+res.error+'</div>';
       return;
     }
-    if(!res.data||res.data.status!=='published'){
+    if(!res.published||!res.payroll){
       document.getElementById('payrollContent').innerHTML='<div class="no-data"><i class="fas fa-lock" style="font-size:24px;margin-bottom:8px;display:block"></i>Bảng lương tháng '+month+' chưa được phát 薪資尚未發佈</div>';
       document.getElementById('payrollSubTabs').style.display='none';
       document.getElementById('payDownloadBtn').style.display='none';
       return;
     }
-    _payrollData=res.data;
+    _payrollData=res.payroll;
     document.getElementById('payrollStatus').textContent='Đã phát 已發';
     document.getElementById('payrollStatus').className='status-badge status-published';
     // Show sub-tabs and download button
@@ -1460,6 +1465,9 @@ function loadPayroll(){
     renderPayrollTab();
   });
 }
+
+// Auto-init
+restoreSavedLogin();
 
 </script>
 </body>
