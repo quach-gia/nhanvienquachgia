@@ -584,6 +584,17 @@ function buildSummaryHtml(shifts, showEditBtn){
   return h;
 }
 function openEditReg(){
+  // Re-check lock status before allowing edit
+  apiCall({action:'getRegLock',weekKey:currentWeekKey},function(r){
+    if(r&&r.success&&r.locked){
+      showToast('Đăng ký đã bị khóa bởi quản lý!');
+      showRegLocked();
+      return;
+    }
+    _doOpenEditReg();
+  });
+}
+function _doOpenEditReg(){
   document.getElementById('regSummary').style.display='none';
   document.getElementById('regDoneStatus').style.display='none';
   // Re-render form with existing data pre-filled
