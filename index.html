@@ -863,7 +863,10 @@ function loadTeamSchedule() {
     checkDone();
   });
   apiCall({action:'getAllSchedule'}, function(res) {
-    if (res.success) { allSchedule = res.schedule; }
+    if (res.success) {
+      // Filter entry trong (lich da xoa boi boss qua publishSchedule)
+      allSchedule = (res.schedule||[]).filter(function(s){ return s && s.start && s.end; });
+    }
     else { errors.push('getAllSchedule: ' + (res.error||'fail')); }
     checkDone();
   });
