@@ -1,820 +1,1488 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Quách Gia BBQ - Chấm Công</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Quách Gia BBQ - Nhân viên</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-:root{--primary:#8B0000;--primary-dark:#6B0000;--accent:#D4A017;--success:#27ae60;--danger:#e74c3c;--info:#3498db;--text:#333;--bg:#f5f5f5;--border:#ddd}
-body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column}
-.header{background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:white;padding:16px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.3);border-bottom:3px solid var(--accent)}
-.header h1{font-size:18px;font-weight:700;margin-bottom:2px}
-.header .subtitle{font-size:11px;opacity:.8}
-.header .conn-status{font-size:10px;margin-top:4px}
-.header .conn-dot{display:inline-block;width:6px;height:6px;border-radius:50%;margin-right:3px}
-.header .conn-dot.ok{background:#2ecc71}
-.header .conn-dot.fail{background:#e74c3c}
-.header .conn-dot.loading{background:#f39c12;animation:pulse 1s infinite}
-.container{flex:1;max-width:420px;margin:0 auto;padding:16px;width:100%}
+:root{--primary:#8B0000;--primary-dark:#5c0000;--accent:#d4a017;--bg:#f5f0eb;--text:#333;--success:#2e7d32;--danger:#c62828;--info:#1565c0;--radius:12px}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:-apple-system,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:15px}
+.header{background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:white;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.header h1{font-size:17px;font-weight:700}
+.header .user-info{display:flex;align-items:center;gap:8px}
+.header .user-name{font-size:13px;font-weight:600}
+.header .user-id{font-size:10px;opacity:.7}
+.header-btns{display:flex;gap:6px}
+.header-btn{background:rgba(255,255,255,.2);border:none;color:white;padding:6px 10px;border-radius:6px;cursor:pointer;font-size:12px}
+.container{max-width:600px;margin:0 auto;padding:12px}
+.card{background:white;border-radius:var(--radius);box-shadow:0 2px 12px rgba(0,0,0,.06);padding:16px;margin-bottom:14px}
+.card-title{font-size:15px;font-weight:700;color:var(--primary);margin-bottom:14px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.tab-bar{display:flex;gap:0;background:white;border-radius:var(--radius);margin-bottom:14px;box-shadow:0 2px 8px rgba(0,0,0,.06);overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tab-btn{flex:1;padding:12px 8px;border:none;background:none;font-weight:600;font-size:12px;cursor:pointer;color:#999;white-space:nowrap;transition:all .2s;border-bottom:3px solid transparent;min-width:0}
+.tab-btn.active{color:var(--primary);border-bottom-color:var(--primary);background:rgba(139,0,0,.04)}
+.tab-btn i{display:block;font-size:16px;margin-bottom:3px}
+.tab-content{display:none}.tab-content.active{display:block}
+.btn{padding:12px 20px;border:none;border-radius:8px;cursor:pointer;font-size:14px;font-weight:600;width:100%;display:flex;align-items:center;justify-content:center;gap:8px;transition:opacity .2s}
+.btn:active{opacity:.8}
+.btn-success{background:var(--success);color:white}
+.btn-primary{background:var(--primary);color:white}
+.no-data{text-align:center;padding:40px 20px;color:#999;font-size:14px}
+.no-data i{font-size:32px;display:block;margin-bottom:10px;opacity:.4}
+.login-page{display:flex;align-items:center;justify-content:center;min-height:100vh;background:linear-gradient(135deg,#f5f0eb,#e8e0d8);padding:20px}
+.login-box{background:white;border-radius:16px;padding:32px 24px;width:100%;max-width:380px;box-shadow:0 8px 30px rgba(0,0,0,.12)}
+.login-box h2{text-align:center;color:var(--primary);margin-bottom:4px;font-size:22px}
+.login-box .subtitle{text-align:center;color:#888;font-size:13px;margin-bottom:24px}
+.form-group{margin-bottom:16px}
+.form-group label{display:block;font-size:13px;font-weight:600;margin-bottom:6px;color:#555}
+.form-group input,.form-group textarea{width:100%;padding:12px 14px;border:2px solid #e0e0e0;border-radius:10px;font-size:15px;transition:border-color .2s;font-family:inherit}
+.form-group input:focus,.form-group textarea:focus{outline:none;border-color:var(--primary)}
+.login-btn{width:100%;padding:14px;background:var(--primary);color:white;border:none;border-radius:10px;font-size:16px;font-weight:700;cursor:pointer}
+.login-btn:active{background:var(--primary-dark)}
+.error-msg{color:var(--danger);font-size:13px;text-align:center;margin-top:10px;display:none}
+.reg-summary-box{background:#f0faf0;border:2px solid #c8e6c9;border-radius:var(--radius);padding:16px}
+.reg-summary-title{font-weight:700;color:var(--success);margin-bottom:12px;font-size:15px;display:flex;align-items:center;gap:8px}
+.sum-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #e0e0e0;font-size:14px}
+.sum-row:last-of-type{border-bottom:none}
+.sum-day{font-weight:600;min-width:80px}
+.sum-off{color:var(--danger);font-weight:600;font-size:13px}
+.sum-shift{color:var(--info);font-weight:600;font-size:13px}
+.reg-card{background:white;border-radius:var(--radius);margin-bottom:12px;overflow:hidden;border:2px solid #e8e8e8;transition:all .2s}
+.reg-card-header{padding:12px 14px;border-bottom:1px solid #f0f0f0;display:flex;align-items:center;justify-content:space-between}
+.reg-day-label{font-weight:700;font-size:15px}
+.reg-day-label.weekend{color:var(--accent)}
+.reg-day-label .required{color:var(--danger);font-size:12px}
+.reg-options{padding:8px 14px}
+.reg-opt{display:flex;align-items:center;padding:10px 0;border-bottom:1px solid #f8f8f8;gap:12px;cursor:pointer;-webkit-user-select:none;user-select:none}
+.reg-opt:last-child{border-bottom:none}
+.reg-opt input[type="checkbox"]{width:22px;height:22px;accent-color:var(--primary);cursor:pointer;flex-shrink:0}
+.reg-opt-label{font-size:14px;font-weight:500;flex:1}
+.reg-opt-time{font-size:12px;color:#888}
+.reg-opt.off-opt .reg-opt-label{color:var(--danger)}
+.reg-custom-time{display:none;padding:8px 0 4px 34px;gap:8px;align-items:center}
+.reg-custom-time.show{display:flex}
+.time-select{padding:8px 6px;border:2px solid #e0e0e0;border-radius:8px;font-size:14px;font-weight:600;background:white;color:var(--text);min-width:70px;text-align:center;-webkit-appearance:none;appearance:none;cursor:pointer}
+.time-select:focus{border-color:var(--primary);outline:none}
+.time-separator{font-size:16px;font-weight:700;color:#ccc;padding:0 4px}
+.reg-reason-box{display:none;padding:4px 0 8px 34px}
+.reg-reason-box.show{display:block}
+.reg-reason-box textarea{width:100%;padding:10px;border:2px solid #ffe082;border-radius:8px;font-size:13px;resize:none;height:50px;background:#fffde7;font-family:inherit}
+.reg-reason-box .reason-hint{font-size:11px;color:var(--accent);font-weight:700;margin-bottom:4px}
+.reg-status{background:#e8f5e9;border-radius:var(--radius);padding:20px;text-align:center;margin-bottom:14px}
+.reg-status i{font-size:36px;color:var(--success);margin-bottom:8px;display:block}
+.reg-status .msg{font-size:15px;font-weight:700;color:var(--success);margin-bottom:4px}
+.reg-status .sub{font-size:12px;color:#888}
+.reg-edit-info{display:flex;align-items:center;justify-content:center;gap:6px;padding:8px;background:#fff3e0;border-radius:8px;font-size:12px;color:#e65100;font-weight:600;margin-bottom:12px}
+.schedule-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-top:10px}
+@media(max-width:600px){.schedule-grid{grid-template-columns:repeat(3,1fr)}}
+@media(min-width:601px) and (max-width:800px){.schedule-grid{grid-template-columns:repeat(4,1fr)}}
+.schedule-card{background:#f8f8f8;border-radius:12px;padding:14px 8px;text-align:center;border:2px solid #e8e8e8;transition:transform .15s}
+.schedule-card.has-shift{border-color:#66bb6a;background:linear-gradient(135deg,#e8f5e9,#f1f8f1)}
+.schedule-card.weekend{background:linear-gradient(135deg,#fffde7,#fff9c4);border-color:#ffe082}
+.schedule-card.weekend.has-shift{border-color:#66bb6a;background:linear-gradient(135deg,#e8f5e9,#f1f8f1)}
+.schedule-card.off-day{border-color:#ef9a9a;background:linear-gradient(135deg,#ffebee,#fce4ec)}
+.schedule-card .sc-day{font-size:13px;color:#8B0000;font-weight:800;text-transform:uppercase;letter-spacing:1px}
+.schedule-card .sc-fulldate{font-size:11px;color:#888;margin:2px 0 6px}
+.schedule-card .sc-date{font-size:28px;font-weight:900;margin:2px 0;color:#333}
+.schedule-card .sc-shift{color:#2e7d32;font-weight:800;font-size:14px;margin-top:6px;background:#c8e6c9;padding:4px 8px;border-radius:6px;display:inline-block}
+.schedule-card .sc-off{color:#c62828;font-size:13px;margin-top:6px;font-weight:700}
+.team-schedule-table{width:100%;border-collapse:separate;border-spacing:0;font-size:12px;margin-top:8px}
+.team-schedule-table th{background:linear-gradient(135deg,#8B0000,#5c0000);color:white;padding:6px 3px;text-align:center;font-size:10px;font-weight:700;position:sticky;top:0;z-index:2}
+.team-schedule-table th:first-child{position:sticky;left:0;z-index:3;min-width:90px}
+.team-schedule-table td{padding:4px 2px;border:1px solid #e0e0e0;text-align:center;font-size:10px;vertical-align:top;background:white}
+.team-schedule-table tr:nth-child(even) td{background:#fafafa}
+.team-schedule-table .emp-name{text-align:left;font-weight:700;font-size:10px;padding-left:6px;white-space:nowrap;position:sticky;left:0;z-index:1;background:white;border-right:2px solid #8B0000;min-width:70px}
+.team-schedule-table tr:nth-child(even) .emp-name{background:#fafafa}
+.team-schedule-table .shift-badge{padding:2px 4px;border-radius:3px;font-weight:700;font-size:9px;display:inline-block;margin:1px 0}
+.team-schedule-table .shift-sang{background:#fff3e0;color:#e65100;border:1px solid #ffcc80}
+.team-schedule-table .shift-trua{background:#e3f2fd;color:#1565c0;border:1px solid #90caf9}
+.team-schedule-table .shift-toi{background:#ede7f6;color:#4527a0;border:1px solid #b39ddb}
+.team-schedule-table .shift-other{background:#e8f5e9;color:#1b5e20;border:1px solid #a5d6a7}
+.team-schedule-table .off-badge{background:#ffebee;color:#c62828;padding:3px 6px;border-radius:4px;font-weight:700;font-size:10px;display:inline-block}
+.team-schedule-table .we-col{background:#fffde7}
+.team-schedule-table tr:nth-child(even) .we-col{background:#fff9c4}
+.task-badge{font-size:8px;padding:1px 4px;border-radius:3px;color:white;display:inline-block;margin:1px 0;font-weight:600}
 
-/* LOGIN */
-.login-card{background:white;border-radius:12px;padding:24px;box-shadow:0 4px 16px rgba(0,0,0,.1);text-align:center}
-.login-card .logo{font-size:48px;color:var(--primary);margin-bottom:12px}
-.login-card h2{font-size:18px;color:var(--primary);margin-bottom:16px}
-.login-card input{width:100%;padding:14px;border:2px solid var(--border);border-radius:8px;font-size:16px;text-align:center;letter-spacing:2px;font-weight:700;margin-bottom:12px;transition:border-color .2s}
-.login-card input:focus{outline:none;border-color:var(--primary)}
-.login-card .btn-login{width:100%;padding:14px;background:var(--primary);color:white;border:none;border-radius:8px;font-size:16px;font-weight:700;cursor:pointer;transition:background .2s}
-.login-card .btn-login:hover{background:var(--primary-dark)}
-.login-card .btn-login:disabled{background:#ccc;cursor:not-allowed}
-
-/* MAIN */
-.main-screen{display:none}
-.emp-info{background:white;border-radius:12px;padding:16px;box-shadow:0 2px 8px rgba(0,0,0,.08);margin-bottom:16px;display:flex;align-items:center;gap:12px}
-.emp-avatar{width:48px;height:48px;border-radius:50%;background:var(--primary);color:white;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700}
-.emp-details h3{font-size:16px;font-weight:700}
-.emp-details .emp-sub{font-size:12px;color:#666}
-.emp-logout{margin-left:auto;background:none;border:none;color:#999;font-size:18px;cursor:pointer;padding:8px}
-.emp-logout:hover{color:var(--danger)}
-
-/* GPS */
-.gps-status{background:white;border-radius:12px;padding:14px;box-shadow:0 2px 8px rgba(0,0,0,.08);margin-bottom:16px;display:flex;align-items:center;gap:10px;font-size:13px}
-.gps-dot{width:12px;height:12px;border-radius:50%;flex-shrink:0}
-.gps-dot.checking{background:#f39c12;animation:pulse 1s infinite}
-.gps-dot.ok{background:var(--success)}
-.gps-dot.fail{background:var(--danger)}
-.gps-dot.off{background:#ccc}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
-.gps-text{flex:1;font-size:12px}
-.gps-dist{font-weight:700;color:var(--primary)}
-
-/* CLOCK */
-.clock-card{background:white;border-radius:12px;padding:24px;box-shadow:0 2px 8px rgba(0,0,0,.08);margin-bottom:16px;text-align:center}
-.clock-time{font-size:48px;font-weight:700;color:var(--primary);font-family:'Courier New',monospace;margin-bottom:4px}
-.clock-date{font-size:14px;color:#666;margin-bottom:16px}
-.clock-buttons{display:flex;gap:12px}
-.btn-clock{flex:1;padding:16px;border:none;border-radius:10px;font-size:16px;font-weight:700;cursor:pointer;transition:all .2s;display:flex;flex-direction:column;align-items:center;gap:6px}
-.btn-clock i{font-size:24px}
-.btn-clock:disabled{opacity:.4;cursor:not-allowed}
-.btn-checkin{background:linear-gradient(135deg,#27ae60,#2ecc71);color:white;box-shadow:0 4px 12px rgba(39,174,96,.3)}
-.btn-checkin:not(:disabled):hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(39,174,96,.4)}
-.btn-checkout{background:linear-gradient(135deg,#e74c3c,#c0392b);color:white;box-shadow:0 4px 12px rgba(231,76,60,.3)}
-.btn-checkout:not(:disabled):hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(231,76,60,.4)}
-
-/* STATUS */
-.status-msg{padding:12px;border-radius:8px;margin-bottom:12px;font-size:13px;font-weight:600;display:none;text-align:center;animation:fadeIn .3s}
-.status-msg.show{display:block}
-.status-msg.success{background:#e8f5e9;color:#2e7d32;border:1px solid #a5d6a7}
-.status-msg.error{background:#ffebee;color:#c62828;border:1px solid #ef9a9a}
-.status-msg.warning{background:#fff8e1;color:#f57f17;border:1px solid #ffe082}
-.status-msg.info{background:#e3f2fd;color:#1565c0;border:1px solid #90caf9}
-@keyframes fadeIn{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
-
-/* DEVICE LOCK & TRACKING */
-.cooldown-bar{background:#fff3e0;border:1px solid #ffe082;border-radius:8px;padding:10px 14px;margin-bottom:12px;font-size:12px;color:#e65100;display:none;text-align:center}
-.cooldown-bar.show{display:block}
-.device-warn{background:#fff3e0;border:1px solid #ffe082;border-radius:8px;padding:10px 14px;margin-bottom:12px;font-size:12px;color:#e65100;display:none;text-align:center}
-.device-warn.show{display:block}
-.device-warn i{margin-right:4px}
-
-/* LOADING OVERLAY */
-.loading-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.5);z-index:999;display:none;align-items:center;justify-content:center;flex-direction:column;gap:12px}
-.loading-overlay.show{display:flex}
-.loading-spinner{width:40px;height:40px;border:4px solid rgba(255,255,255,.3);border-top-color:white;border-radius:50%;animation:spin .8s linear infinite}
-@keyframes spin{to{transform:rotate(360deg)}}
-.loading-text{color:white;font-size:14px;font-weight:600}
-
-/* HISTORY */
-.history-card{background:white;border-radius:12px;padding:16px;box-shadow:0 2px 8px rgba(0,0,0,.08)}
-.history-card h3{font-size:14px;color:var(--primary);margin-bottom:10px;display:flex;align-items:center;gap:6px}
-.history-item{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f0f0f0;font-size:13px}
-.history-item:last-child{border-bottom:none}
-.history-icon{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;color:white;flex-shrink:0}
-.history-icon.in{background:var(--success)}
-.history-icon.out{background:var(--danger)}
-.history-time{font-weight:700;font-family:'Courier New',monospace}
-.history-date{font-size:11px;color:#999}
-.history-hours{margin-left:auto;font-weight:700;color:var(--primary);font-size:12px}
-.no-history{text-align:center;color:#999;padding:16px;font-size:13px}
+.att-table{width:100%;border-collapse:collapse;font-size:13px;margin-top:8px}
+.att-table th{background:linear-gradient(135deg,#8B0000,#5c0000);color:white;padding:10px 6px;text-align:center;font-size:11px;font-weight:700}
+.att-table td{padding:8px 6px;border-bottom:1px solid #f0f0f0;text-align:center;font-size:12px}
+.att-table tr:nth-child(even){background:#fafafa}
+.att-table tr:hover{background:#fff3e0}
+.att-table tr.weekend-row{background:#fffde7}
+.att-table tr.weekend-row:hover{background:#fff9c4}
+.att-table .total-row{background:linear-gradient(135deg,#e8f5e9,#c8e6c9);font-weight:800;font-size:13px}
+.att-table .total-row:hover{background:linear-gradient(135deg,#c8e6c9,#a5d6a7)}
+.att-table .day-col{font-weight:700;color:#333;min-width:60px}
+.att-table .time-in{color:#2e7d32;font-weight:600}
+.att-table .time-out{color:#c62828;font-weight:600}
+.att-table .hours-col{font-weight:700}
+.att-table .nc-col{color:#1565c0;font-weight:700}
+.att-table .no-data-cell{color:#ccc;font-size:11px}
+.att-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}
+.att-summary-card{background:linear-gradient(135deg,#f8f8f8,#fff);border-radius:10px;padding:12px;text-align:center;border:1px solid #e0e0e0}
+.att-summary-card .att-s-value{font-size:22px;font-weight:900;color:#8B0000}
+.att-summary-card .att-s-label{font-size:11px;color:#888;margin-top:4px}
+.att-late-banner{background:#fff3e0;border:1px solid #ffe082;border-radius:8px;padding:8px 12px;margin-bottom:10px;font-size:12px;color:#e65100}
+.pay-row{display:flex;justify-content:space-between;padding:10px 14px;border-bottom:1px solid #f5f5f5;font-size:14px}
+.pay-row.highlight{background:linear-gradient(135deg,#e8f5e9,#c8e6c9);font-weight:700;font-size:16px;border-radius:10px;margin-top:10px;border:none}
+.pay-label{color:#666}.pay-value{font-weight:700}
+.status-badge{display:inline-block;padding:4px 12px;border-radius:20px;font-size:11px;font-weight:700}
+.status-published{background:#e8f5e9;color:#2e7d32}
+.status-unpublished{background:#fff3e0;color:#e65100}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#333;color:white;padding:12px 24px;border-radius:10px;font-size:13px;font-weight:600;z-index:9999;display:none;box-shadow:0 4px 20px rgba(0,0,0,.2)}
+.modal-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.5);z-index:9998;align-items:flex-end;justify-content:center}
+.modal-overlay.active{display:flex}
+.modal-box{background:white;border-radius:16px 16px 0 0;width:100%;max-width:500px;padding:24px;max-height:80vh;overflow-y:auto;animation:slideUp .3s ease}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.modal-box h3{font-size:16px;margin-bottom:16px;color:var(--primary);display:flex;align-items:center;gap:8px}
+.modal-close{margin-left:auto;border:none;background:none;font-size:22px;cursor:pointer;color:#999;padding:4px}
 </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
 <body>
-<div class="header">
-    <h1><i class="fas fa-fire"></i> Quách Gia BBQ 郭家烤肉</h1>
-    <div class="subtitle">Hệ thống Chấm công Nhân viên</div>
-    <div class="conn-status"><span class="conn-dot loading" id="connDot"></span><span id="connText">Đang kết nối...</span></div>
+<div id="loginPage" class="login-page">
+  <div class="login-box">
+    <h2><i class="fas fa-fire"></i> Quách Gia BBQ</h2>
+    <div class="subtitle">Hệ thống nhân viên</div>
+    <div class="form-group"><label>Mã nhân viên</label><input type="text" id="loginEmpId" placeholder="VD: PTNV016" autocomplete="off"></div>
+    <div class="form-group"><label>Mật khẩu</label><input type="password" id="loginPassword" placeholder="Mật khẩu"></div>
+    <div style="text-align:center;font-size:12px;color:#888;margin-bottom:12px"><i class="fas fa-lock" style="font-size:11px"></i> Mật khẩu sẽ được lưu tự động 密碼將自動保存</div>
+    <button class="login-btn" onclick="doLogin()"><i class="fas fa-sign-in-alt"></i> Đăng nhập</button>
+    <div class="error-msg" id="loginError"></div>
+  </div>
 </div>
-<div class="container">
-    <!-- LOGIN -->
-    <div id="loginScreen">
-        <div class="login-card">
-            <div class="logo"><i class="fas fa-user-clock"></i></div>
-            <h2>Đăng nhập Chấm công</h2>
-            <input type="text" id="loginCode" placeholder="Nhập mã nhân viên" maxlength="10" autocomplete="off">
-            <button class="btn-login" onclick="doLogin()"><i class="fas fa-sign-in-alt"></i> Đăng nhập</button>
-            <div id="loginError" style="color:var(--danger);font-size:12px;margin-top:8px;display:none"></div>
-            <div style="margin-top:12px;font-size:11px;color:#999">
-                <span id="empCountInfo"></span>
-                <button onclick="forceReloadEmployees()" style="background:none;border:1px solid #ccc;color:#666;padding:2px 8px;border-radius:4px;font-size:11px;cursor:pointer;margin-left:4px"><i class="fas fa-sync-alt"></i> Tải lại DS</button>
-            </div>
-        </div>
+<div id="mainApp" style="display:none">
+  <div class="header">
+    <h1><i class="fas fa-fire"></i> QG BBQ</h1>
+    <div class="user-info">
+      <div><div class="user-name" id="headerName"></div><div class="user-id" id="headerEmpId"></div></div>
+      <div class="header-btns">
+        <button class="header-btn" onclick="showChangePwModal()" title="Đổi mật khẩu"><i class="fas fa-key"></i></button>
+        <button class="header-btn" onclick="doLogout()" title="Đăng xuất"><i class="fas fa-sign-out-alt"></i></button>
+      </div>
     </div>
-
-    <!-- MAIN -->
-    <div id="mainScreen" class="main-screen">
-        <div class="emp-info">
-            <div class="emp-avatar" id="empAvatar">?</div>
-            <div class="emp-details">
-                <h3 id="empNameDisplay">—</h3>
-                <div class="emp-sub"><span id="empDeptDisplay">—</span> · <span id="empTypeDisplay">—</span> · <span id="empIdDisplay">—</span></div>
-            </div>
-            <button class="emp-logout" onclick="doLogout()" title="Đăng xuất"><i class="fas fa-sign-out-alt"></i></button>
-        </div>
-
-        <div class="gps-status" id="gpsStatus">
-            <div class="gps-dot off" id="gpsDot"></div>
-            <div class="gps-text" id="gpsText">Đang kiểm tra vị trí...</div>
-        </div>
-
-        <div class="cooldown-bar" id="cooldownBar">
-            <i class="fas fa-hourglass-half"></i> <span id="cooldownText"></span>
-        </div>
-
-        <div class="device-warn" id="deviceWarnBar">
-            <i class="fas fa-exclamation-triangle"></i> <span id="deviceWarnText"></span>
-        </div>
-
-        <div id="statusMsg" class="status-msg"></div>
-
-        <div class="clock-card">
-            <div class="clock-time" id="clockTime">00:00:00</div>
-            <div class="clock-date" id="clockDate">—</div>
-            <div class="clock-buttons">
-                <button class="btn-clock btn-checkin" id="btnCheckin" onclick="doCheckin()" disabled>
-                    <i class="fas fa-sign-in-alt"></i><span>VÀO CA</span>
-                </button>
-                <button class="btn-clock btn-checkout" id="btnCheckout" onclick="doCheckout()" disabled>
-                    <i class="fas fa-sign-out-alt"></i><span>TAN CA</span>
-                </button>
-            </div>
-        </div>
-
-        <div class="history-card">
-            <h3><i class="fas fa-history"></i> Lịch sử chấm công <button onclick="loadHistory()" style="background:none;border:none;color:var(--info);cursor:pointer;font-size:12px;margin-left:auto"><i class="fas fa-sync-alt"></i></button></h3>
-            <div id="historyList"><div class="no-history">Đang tải...</div></div>
-        </div>
+  </div>
+  <div class="container">
+    <div class="tab-bar">
+      <button class="tab-btn active" onclick="switchTab('register',this)"><i class="fas fa-calendar-plus"></i>Đăng ký</button>
+      <button class="tab-btn" onclick="switchTab('schedule',this)"><i class="fas fa-calendar-alt"></i>Lịch làm</button>
+      <button class="tab-btn" onclick="switchTab('attendance',this)"><i class="fas fa-clock"></i>Chấm công</button>
+      <button class="tab-btn" onclick="switchTab('payroll',this)"><i class="fas fa-wallet"></i>Lương</button>
     </div>
+    <div id="tabRegister" class="tab-content active">
+      <div class="card">
+        <div class="card-title"><i class="fas fa-calendar-plus"></i> Đăng ký ca</div>
+        <div id="regLoadingIndicator" style="text-align:center;padding:30px 10px"><i class="fas fa-spinner fa-spin" style="font-size:24px;color:#8B0000"></i><div style="margin-top:10px;color:#888;font-size:13px">Đang tải lịch đăng ký ca...</div></div>
+        <div id="registerWeekLabel" style="font-size:13px;color:#888;margin-bottom:8px;font-weight:600"></div>
+        <div id="regEditInfo"></div>
+        <div id="registerContent"></div>
+        <div id="regSubmitArea" style="margin-top:16px;display:none">
+          <button class="btn btn-success" id="btnSubmitReg" onclick="submitRegistration()"><i class="fas fa-paper-plane"></i> Gửi đăng ký</button>
+        </div>
+        <div id="regDoneStatus" style="display:none"></div>
+        <div id="regSummary" style="display:none"></div>
+      </div>
+    </div>
+    <div id="tabSchedule" class="tab-content">
+      <div class="card">
+        <div class="card-title" style="flex-wrap:wrap;gap:8px"><span><i class="fas fa-calendar-alt"></i> Lịch của tôi</span> <span id="scheduleStatus" class="status-badge status-unpublished">Chưa phát</span><button onclick="saveMyScheduleImage()" style="margin-left:auto;background:#2e7d32;color:white;border:none;padding:6px 14px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer"><i class="fas fa-download"></i> Lưu ảnh</button></div>
+        <div id="scheduleContent"><div class="no-data"><i class="fas fa-calendar-times"></i>Boss chưa phát lịch làm.</div></div>
+      </div>
+      <div class="card" style="margin-top:12px">
+        <div class="card-title" style="flex-wrap:wrap;gap:8px">
+          <span><i class="fas fa-users"></i> Lịch tổng nhân viên</span>
+          <div style="margin-left:auto;display:flex;gap:6px">
+            <button onclick="loadTeamSchedule()" style="background:#1565c0;color:white;border:none;padding:6px 10px;border-radius:8px;font-size:11px;font-weight:700;cursor:pointer"><i class="fas fa-sync-alt"></i></button>
+            <button onclick="saveAllTeamScheduleImage()" style="background:#2e7d32;color:white;border:none;padding:6px 14px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer"><i class="fas fa-download"></i> Lưu ảnh</button>
+          </div>
+        </div>
+        <div id="teamScheduleContent"><div class="no-data"><i class="fas fa-users"></i>Đang tải...</div></div>
+      </div>
+    </div>
+    <div id="tabAttendance" class="tab-content">
+      <div class="card">
+        <div class="card-title"><i class="fas fa-clock"></i> Chấm công <select id="attMonth" onchange="loadAttendance()" style="margin-left:auto;padding:6px 10px;border:2px solid #e0e0e0;border-radius:8px;font-size:13px;font-weight:600"></select></div>
+        <div id="attendanceContent"><div class="no-data"><i class="fas fa-clipboard-list"></i>Chưa có dữ liệu.</div></div>
+      </div>
+    </div>
+    <div id="tabPayroll" class="tab-content">
+      <div class="card">
+        <div class="card-title"><i class="fas fa-wallet"></i> Bảng lương <span id="payrollStatus" class="status-badge status-unpublished" style="margin-left:auto">Chưa phát</span> <select id="payMonth" onchange="loadPayroll()" style="padding:6px 10px;border:2px solid #e0e0e0;border-radius:8px;font-size:13px;font-weight:600"></select></div>
+        <div id="payrollSubTabs" style="display:none">
+          <div style="display:flex;gap:0;border-bottom:2px solid #e0e0e0;margin-bottom:12px">
+            <button class="pay-sub-tab active" onclick="switchPayTab('chamcong')" id="payTabCC" style="flex:1;padding:10px 8px;border:none;background:none;font-weight:700;font-size:13px;cursor:pointer;color:#999;border-bottom:3px solid transparent"><i class="fas fa-clipboard-list"></i> Chấm công</button>
+            <button class="pay-sub-tab" onclick="switchPayTab('chitiet')" id="payTabCT" style="flex:1;padding:10px 8px;border:none;background:none;font-weight:700;font-size:13px;cursor:pointer;color:#999;border-bottom:3px solid transparent"><i class="fas fa-file-invoice-dollar"></i> Chi tiết lương</button>
+          </div>
+          <div style="text-align:right;margin-bottom:10px">
+            <button id="payDownloadBtn" onclick="downloadPayrollImage()" style="background:var(--success);color:white;border:none;padding:8px 16px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer"><i class="fas fa-download"></i> Tải ảnh</button>
+          </div>
+        </div>
+        <div id="payrollContent"><div class="no-data"><i class="fas fa-file-invoice-dollar"></i>Boss chưa phát bảng lương.</div></div>
+      </div>
+    </div>
+  </div>
 </div>
-
-<!-- Loading overlay -->
-<div class="loading-overlay" id="loadingOverlay">
-    <div class="loading-spinner"></div>
-    <div class="loading-text" id="loadingText">Đang xử lý...</div>
-    <button onclick="cancelLoading()" style="margin-top:16px;padding:10px 28px;background:rgba(255,255,255,.15);color:white;border:2px solid rgba(255,255,255,.4);border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;backdrop-filter:blur(4px)">✕ Hủy</button>
+<div class="modal-overlay" id="changePwModal">
+  <div class="modal-box">
+    <h3><i class="fas fa-key"></i> Đổi mật khẩu <button class="modal-close" onclick="closeModal('changePwModal')">&times;</button></h3>
+    <div class="form-group"><label>Mật khẩu cũ</label><input type="password" id="oldPw" placeholder="Nhập mật khẩu hiện tại"></div>
+    <div class="form-group"><label>Mật khẩu mới</label><input type="password" id="newPw" placeholder="Nhập mật khẩu mới"></div>
+    <div class="form-group"><label>Xác nhận</label><input type="password" id="confirmPw" placeholder="Nhập lại mật khẩu mới"></div>
+    <button class="btn btn-primary" onclick="doChangePassword()"><i class="fas fa-save"></i> Lưu mật khẩu</button>
+  </div>
 </div>
-
+<div class="toast" id="toast"></div>
 <script>
-// ===== CẤU HÌNH =====
-var API_URL = 'https://script.google.com/macros/s/AKfycbycbK9uB4DiQ8D6x20RrFlZnbPXTxz5zczFxFOGxfWqjkGRoa41OjonOy0PYdPTkq9w/exec';
-var CONFIG = {
-    LAT: 11.0582514,
-    LNG: 106.7973154,
-    RADIUS: 100, // mét — bán kính 100m quanh quán
-    // Không có cooldown giữa các action — khóa thiết bị theo NV trong ngày
-    TEST_MODE: false, // Production
-};
+var API_URL='https://script.google.com/macros/s/AKfycbzQBhNS_FhLo-biBQ_tRsJEekAVWqXFYw8bOAeAHJDm6fewT0KAjaCCuAXPdODv4BUW/exec';
+var currentUser=null;
+var dayNames=['CN','T2','T3','T4','T5','T6','T7'];
+var currentWeekKey='';
+var regEditCount=0;
+var SHIFTS=[
+  {id:'sang',label:'Ca sáng',start:'09:00',end:'14:00',color:'#fff3e0'},
+  {id:'trua',label:'Ca trưa',start:'11:00',end:'18:00',color:'#e3f2fd'},
+  {id:'toi',label:'Ca tối',start:'17:00',end:'23:00',color:'#ede7f6'}
+];
 
-// Danh sách NV — sẽ được tải từ Google Sheet, fallback sang hardcode
-var EMPLOYEES = [];
-var EMPLOYEES_LOADED = false;
-
-var QG_API_URL = 'https://script.google.com/macros/s/AKfycbyhh2LOT1O9YBj2aJm2uWh-vaVjbb_Ny--3FD94HIoN4iBl9F9NXBZwzEk-90vnBcP2/exec';
-function loadEmployeesFromSheet(callback){
-    var dot=document.getElementById('connDot');
-    var text=document.getElementById('connText');
-    dot.className='conn-dot loading';
-    text.textContent='Đang tải danh sách NV...';
-    // Gọi API của sheet QG - HỆ THỐNG NHÂN VIÊN để lấy Accounts
-    var url=QG_API_URL+'?action=getAccounts';
-    fetch(url,{redirect:'follow'}).then(function(r){return r.json();}).then(function(data){
-        var accs=data&&data.success?(data.accounts||data.employees):null;
-        if(!accs||!accs.length){
-            useFallback('API trả về rỗng');
-            if(callback)callback();
-            return;
-        }
-        // Convert accounts to EMPLOYEES format
-        EMPLOYEES=accs.map(function(a){
-            return {id:a.empId,name:a.name,nameCN:a.nameCN||'',dept:a.dept||'',type:a.type||''};
-        }).filter(function(e){return e.id&&e.id!=='BOSS';});
-        EMPLOYEES_LOADED=true;
-        localStorage.setItem('qg_cc_employees',JSON.stringify(EMPLOYEES));
-        dot.className='conn-dot ok';
-        text.textContent='Đã kết nối ('+EMPLOYEES.length+' NV)';
-        updateEmpCountInfo();
-        // Also check connection to checkin API
-        checkConnection();
-        if(callback)callback();
-    }).catch(function(err){
-        // Fallback: try XHR
-        var xhr=new XMLHttpRequest();xhr.open('GET',url,true);
-        xhr.onload=function(){
-            try{var data=JSON.parse(xhr.responseText);var accs2=data&&data.success?(data.accounts||data.employees):null;
-                if(accs2&&accs2.length){
-                    EMPLOYEES=accs2.map(function(a){return {id:a.empId,name:a.name,nameCN:a.nameCN||'',dept:a.dept||'',type:a.type||''};}).filter(function(e){return e.id&&e.id!=='BOSS';});
-                    EMPLOYEES_LOADED=true;localStorage.setItem('qg_cc_employees',JSON.stringify(EMPLOYEES));
-                    dot.className='conn-dot ok';text.textContent='Đã kết nối ('+EMPLOYEES.length+' NV)';updateEmpCountInfo();checkConnection();
-                }else{useFallback('Dữ liệu không hợp lệ');}
-            }catch(e){useFallback(e.message);}
-            if(callback)callback();
-        };
-        xhr.onerror=function(){useFallback('Không kết nối được');if(callback)callback();};
-        xhr.send();
-    });
+function timeOptions(selected){
+  var h='';
+  for(var hr=6;hr<=23;hr++){for(var mn=0;mn<60;mn+=30){
+    var val=String(hr).padStart(2,'0')+':'+String(mn).padStart(2,'0');
+    h+='<option value="'+val+'"'+(val===selected?' selected':'')+'>'+val+'</option>';
+  }}return h;
 }
-function updateEmpCountInfo(){
-    var el=document.getElementById('empCountInfo');
-    if(el)el.textContent=EMPLOYEES.length?('DS: '+EMPLOYEES.length+' NV'):'Chưa tải DS';
+function getWeekKey(date){
+  var d=new Date(date);d.setHours(0,0,0,0);
+  d.setDate(d.getDate()+3-(d.getDay()+6)%7);
+  var week1=new Date(d.getFullYear(),0,4);
+  var weekNum=1+Math.round(((d-week1)/86400000-3+(week1.getDay()+6)%7)/7);
+  return d.getFullYear()+'-W'+String(weekNum).padStart(2,'0');
 }
-function forceReloadEmployees(){
-    localStorage.removeItem('qg_cc_employees');
-    EMPLOYEES=[];EMPLOYEES_LOADED=false;
-    updateEmpCountInfo();
-    loadEmployeesFromSheet(function(){
-        updateEmpCountInfo();
-        if(EMPLOYEES.length){
-            var errEl=document.getElementById('loginError');
-            errEl.textContent='Đã tải lại: '+EMPLOYEES.length+' NV. Hãy đăng nhập lại.';
-            errEl.style.display='block';errEl.style.color='#4caf50';
-        }
-    });
+function apiCall(params,callback){
+  var qs=Object.keys(params).map(function(k){return encodeURIComponent(k)+'='+encodeURIComponent(params[k]);}).join('&');
+  var url=API_URL;
+  var fullUrl=url+'?'+qs;
+  var opts=qs.length>1500?{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:qs,redirect:'follow'}:{redirect:'follow'};
+  var fetchUrl=qs.length>1500?url:fullUrl;
+  var done=false;
+  var timer=setTimeout(function(){if(!done){done=true;console.warn('API timeout 60s for action:',params.action);callback({success:false,error:'Timeout 60s - thử lại sau'});}},60000);
+  fetch(fetchUrl,opts).then(function(r){return r.text();}).then(function(txt){
+    if(done)return;done=true;clearTimeout(timer);
+    try{callback(JSON.parse(txt));}catch(e){console.warn('API parse error:',txt.substring(0,300));callback({success:false,error:'Lỗi server response'});}
+  }).catch(function(err){if(done)return;done=true;clearTimeout(timer);console.warn('API error:',err);callback({success:false,error:'Lỗi kết nối: '+err.message});});
 }
-function useFallback(reason){
-    console.warn('loadEmployees fallback:',reason);
-    var dot=document.getElementById('connDot');
-    var text=document.getElementById('connText');
-    var cached=localStorage.getItem('qg_cc_employees');
-    if(cached){
-        try{EMPLOYEES=JSON.parse(cached);EMPLOYEES_LOADED=true;
-            dot.className='conn-dot ok';text.textContent='Dùng danh sách đã lưu ('+EMPLOYEES.length+' NV)';return;}catch(e){}
-    }
-    dot.className='conn-dot fail';text.textContent='Không tải được danh sách NV';
-}
-
-
-// ===== STATE =====
-var currentEmp = null;
-var gpsOk = false;
-var currentDistance = null;
-var gpsWatchId = null;
-var clockInterval = null;
-
-
-// ===== DEVICE ID =====
-function getDeviceId(){
-    var did=localStorage.getItem('qg_device_id');
-    if(!did){did='DEV_'+Date.now()+'_'+Math.random().toString(36).substring(2,8);localStorage.setItem('qg_device_id',did);}
-    return did;
-}
-
-// ===== API CALL (với timeout + retry) =====
-var _apiCallId=0;
-function apiCall(params, callback, _retryCount){
-    if(typeof _retryCount==='undefined')_retryCount=0;
-    var MAX_RETRIES=2;
-    var TIMEOUT_MS=15000; // 15 giây timeout
-    var callId=++_apiCallId;
-    var url = API_URL + '?';
-    var parts = [];
-    for(var k in params) parts.push(encodeURIComponent(k)+'='+encodeURIComponent(params[k]));
-    url += parts.join('&');
-    var done=false;
-    function finish(err,data){
-        if(done)return;done=true;
-        if(err&&_retryCount<MAX_RETRIES){
-            console.log('[API] Retry #'+(_retryCount+1)+' for action='+params.action);
-            setTimeout(function(){apiCall(params,callback,_retryCount+1);},1000*(_retryCount+1));
-            return;
-        }
-        callback(err,data);
-    }
-    // Timeout
-    var timer=setTimeout(function(){
-        if(!done){console.warn('[API] Timeout after '+TIMEOUT_MS+'ms, action='+params.action);finish(new Error('Hết thời gian chờ ('+Math.round(TIMEOUT_MS/1000)+'s). Vui lòng thử lại.'));}
-    },TIMEOUT_MS);
-    function clearT(){clearTimeout(timer);}
-    // Try fetch first
-    var ctrl;try{ctrl=new AbortController();}catch(e){ctrl=null;}
-    var fetchTimer;
-    if(ctrl){fetchTimer=setTimeout(function(){ctrl.abort();},TIMEOUT_MS-500);}
-    var fetchOpts={redirect:'follow'};
-    if(ctrl)fetchOpts.signal=ctrl.signal;
-    fetch(url,fetchOpts)
-        .then(function(r){return r.json();})
-        .then(function(data){clearT();if(fetchTimer)clearTimeout(fetchTimer);finish(null,data);})
-        .catch(function(err){
-            if(fetchTimer)clearTimeout(fetchTimer);
-            if(done)return;
-            // Fallback: XHR
-            var xhr=new XMLHttpRequest();xhr.open('GET',url,true);
-            xhr.timeout=TIMEOUT_MS-1000;
-            xhr.onload=function(){clearT();try{var data=JSON.parse(xhr.responseText);finish(null,data);}catch(e){finish(e);}};
-            xhr.onerror=function(){clearT();finish(new Error('Không thể kết nối server'));};
-            xhr.ontimeout=function(){clearT();finish(new Error('Hết thời gian chờ'));};
-            try{xhr.send();}catch(e2){clearT();finish(e2);}
-        });
-}
-
-// ===== CHECK CONNECTION =====
-var _connRetryTimer=null;
-function checkConnection(){
-    var dot=document.getElementById('connDot');
-    var text=document.getElementById('connText');
-    // Giữ text hiện tại nếu đã kết nối, chỉ đổi dot
-    var prevText=text.textContent;
-    if(prevText.indexOf('Đã kết nối')===0||prevText.indexOf('Dùng danh sách')===0){
-        // Đã có trạng thái tốt → chỉ kiểm tra ngầm
-    }else{
-        dot.className='conn-dot loading';
-        text.textContent='Đang kiểm tra kết nối...';
-    }
-    apiCall({action:'ping'}, function(err, data){
-        if(err||!data||!data.success){
-            dot.className='conn-dot fail';
-            text.textContent='Mất kết nối — đang thử lại...';
-            // Auto-retry sau 10s
-            if(_connRetryTimer)clearTimeout(_connRetryTimer);
-            _connRetryTimer=setTimeout(function(){checkConnection();},10000);
-        }else{
-            dot.className='conn-dot ok';
-            text.textContent='Đã kết nối Google Sheets';
-            if(_connRetryTimer){clearTimeout(_connRetryTimer);_connRetryTimer=null;}
-        }
-    });
-}
-
-// ===== GPS =====
-function haversine(lat1,lon1,lat2,lon2){
-    var R=6371000,dLat=(lat2-lat1)*Math.PI/180,dLon=(lon2-lon1)*Math.PI/180;
-    var a=Math.sin(dLat/2)*Math.sin(dLat/2)+Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLon/2)*Math.sin(dLon/2);
-    return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
-}
-function startGPS(){
-    var dot=document.getElementById('gpsDot'),text=document.getElementById('gpsText');
-    dot.className='gps-dot checking';text.textContent='Đang lấy vị trí...';
-    if(!navigator.geolocation){dot.className='gps-dot fail';text.innerHTML='<span style="color:var(--danger)">Trình duyệt không hỗ trợ GPS</span>';gpsOk=false;updateButtons();return;}
-    function onPos(pos){
-        var dist=haversine(pos.coords.latitude,pos.coords.longitude,CONFIG.LAT,CONFIG.LNG);
-        currentDistance=Math.round(dist);
-        if(dist<=CONFIG.RADIUS){
-            dot.className='gps-dot ok';
-            text.innerHTML='<i class="fas fa-check-circle" style="color:var(--success)"></i> Trong phạm vi quán <span class="gps-dist">('+currentDistance+'m)</span>';
-            gpsOk=true;
-        }else{
-            dot.className='gps-dot fail';
-            text.innerHTML='<i class="fas fa-times-circle" style="color:var(--danger)"></i> Ngoài phạm vi <span class="gps-dist">('+currentDistance+'m / max '+CONFIG.RADIUS+'m)</span>';
-            gpsOk=false;
-        }
-        updateButtons();
-    }
-    function onErr(err){
-        dot.className='gps-dot fail';
-        if(CONFIG.TEST_MODE){
-            text.innerHTML='<span style="color:#f39c12"><i class="fas fa-flask"></i> CHẾ ĐỘ TEST — bỏ qua GPS</span>';
-            gpsOk=true;currentDistance=0;
-        }else{
-            text.innerHTML=err.code===1?'<span style="color:var(--danger)"><i class="fas fa-lock"></i> Vui lòng cho phép truy cập vị trí</span>':'<span style="color:var(--danger)"><i class="fas fa-exclamation-triangle"></i> Không lấy được vị trí</span>';
-            gpsOk=false;
-        }
-        updateButtons();
-    }
-    navigator.geolocation.getCurrentPosition(onPos,onErr,{enableHighAccuracy:true,timeout:15000,maximumAge:0});
-    gpsWatchId=navigator.geolocation.watchPosition(onPos,onErr,{enableHighAccuracy:true,timeout:15000,maximumAge:5000});
-}
-function stopGPS(){if(gpsWatchId!==null){navigator.geolocation.clearWatch(gpsWatchId);gpsWatchId=null;}}
-
-// ===== KHÓA THIẾT BỊ THEO NV TRONG NGÀY =====
-// Lưu: qg_cc_devlock_{deviceId} = {empId:'NV001', date:'09/05/2026'}
-// Nếu NV khác cố đăng nhập trên thiết bị đã khóa trong ngày → chặn
-function getDeviceLock(){
-    try{
-        var raw=localStorage.getItem('qg_cc_devlock_'+getDeviceId());
-        if(!raw)return null;
-        var lock=JSON.parse(raw);
-        // Kiểm tra còn trong ngày không
-        if(lock.date===getTodayVN())return lock;
-        // Hết ngày → xóa lock
-        localStorage.removeItem('qg_cc_devlock_'+getDeviceId());
-        return null;
-    }catch(e){return null;}
-}
-function setDeviceLock(empId){
-    var lock={empId:empId, date:getTodayVN()};
-    localStorage.setItem('qg_cc_devlock_'+getDeviceId(), JSON.stringify(lock));
-}
-function isDeviceLockedForOther(empId){
-    var lock=getDeviceLock();
-    if(!lock)return false; // chưa ai dùng
-    return lock.empId!==empId; // true nếu NV khác đã khóa
-}
-function getDeviceLockOwnerName(){
-    var lock=getDeviceLock();
-    if(!lock)return '';
-    var emp=EMPLOYEES.find(function(e){return e.id===lock.empId;});
-    return emp?(emp.name+' ('+lock.empId+')'):(lock.empId);
-}
-function updateDeviceLockBar(){
-    var bar=document.getElementById('cooldownBar');
-    if(!currentEmp){bar.classList.remove('show');return;}
-    var lock=getDeviceLock();
-    if(lock&&lock.empId!==currentEmp.id){
-        bar.classList.add('show');
-        document.getElementById('cooldownText').textContent='Thiết bị này đã được '+getDeviceLockOwnerName()+' sử dụng hôm nay. Không thể chấm công cho tài khoản khác.';
-    }else{
-        bar.classList.remove('show');
-    }
-}
-
-// ===== BUTTONS =====
-var checkedInToday=false; // NV hiện tại đang trong ca (check-in cuối chưa có check-out)
-function updateButtons(){
-    var btnIn=document.getElementById('btnCheckin'),btnOut=document.getElementById('btnCheckout');
-    var locked=currentEmp?isDeviceLockedForOther(currentEmp.id):false;
-    // VÀO CA: cần GPS OK + thiết bị không bị khóa bởi NV khác + hiện KHÔNG đang trong ca
-    btnIn.disabled=!gpsOk||locked||checkedInToday;
-    // TAN CA: cần GPS OK + thiết bị không bị khóa bởi NV khác + hiện ĐANG trong ca
-    btnOut.disabled=!gpsOk||locked||!checkedInToday;
-}
+function showToast(msg){var t=document.getElementById('toast');t.textContent=msg;t.style.display='block';setTimeout(function(){t.style.display='none';},3000);}
 
 // ===== LOGIN =====
 function doLogin(){
-    var code=document.getElementById('loginCode').value.trim().toUpperCase();
-    var errEl=document.getElementById('loginError');
-    if(!code){errEl.textContent='Vui lòng nhập mã nhân viên';errEl.style.display='block';return;}
-    if(!EMPLOYEES.length){errEl.textContent='Đang tải danh sách NV, vui lòng chờ...';errEl.style.display='block';return;}
-    var emp=EMPLOYEES.find(function(e){return e.id.toUpperCase()===code;});
-    if(!emp){errEl.textContent='Không tìm thấy mã NV: '+code+' (Tổng: '+EMPLOYEES.length+' NV)';errEl.style.display='block';return;}
-    // Kiểm tra thiết bị có bị khóa bởi NV khác không
-    if(isDeviceLockedForOther(emp.id)){
-        var ownerName=getDeviceLockOwnerName();
-        errEl.textContent='Thiết bị này đã được '+ownerName+' chấm công hôm nay. Không thể đăng nhập tài khoản khác trên thiết bị này!';
-        errEl.style.display='block';errEl.style.color='var(--danger)';
-        return;
+  var empId=document.getElementById('loginEmpId').value.trim();
+  var password=document.getElementById('loginPassword').value.trim();
+  if(!empId||!password){showLoginError('Vui lòng nhập đầy đủ');return;}
+  var btn=document.querySelector('.login-btn');
+  btn.disabled=true;btn.innerHTML='<i class="fas fa-spinner fa-spin"></i> Đang đăng nhập...';
+  var done=false;
+  var timer=setTimeout(function(){if(!done){done=true;btn.disabled=false;btn.innerHTML='<i class="fas fa-sign-in-alt"></i> Đăng nhập';showLoginError('Timeout 30s - kiểm tra mạng hoặc deployment Apps Script');}},30000);
+  apiCall({action:'login',empId:empId,password:password},function(res){
+    if(done)return;done=true;clearTimeout(timer);
+    btn.disabled=false;btn.innerHTML='<i class="fas fa-sign-in-alt"></i> Đăng nhập';
+    if(res.success){currentUser={empId:res.empId,name:res.name,role:res.role};localStorage.setItem('qg_user',JSON.stringify(currentUser));localStorage.setItem('qg_saved_login',JSON.stringify({empId:empId,password:password}));showMainApp();}
+    else{showLoginError(res.error||'Lỗi không xác định');}
+  });
+}
+function doLogout(){currentUser=null;localStorage.removeItem('qg_user');document.getElementById('loginPage').style.display='flex';document.getElementById('mainApp').style.display='none';document.getElementById('loginEmpId').value='';document.getElementById('loginPassword').value='';restoreSavedLogin();}
+function restoreSavedLogin(){try{var s=localStorage.getItem('qg_saved_login');if(s){var d=JSON.parse(s);document.getElementById('loginEmpId').value=d.empId||'';document.getElementById('loginPassword').value=d.password||'';}}catch(e){}}
+function showLoginError(msg){var el=document.getElementById('loginError');el.textContent=msg;el.style.display='block';setTimeout(function(){el.style.display='none';},3000);}
+function showMainApp(){
+  document.getElementById('loginPage').style.display='none';
+  document.getElementById('mainApp').style.display='block';
+  document.getElementById('headerName').textContent=currentUser.name;
+  document.getElementById('headerEmpId').textContent=currentUser.empId;
+  initMonthSelectors();loadRegisterWeek();loadSchedule();
+}
+
+// ===== CHANGE PASSWORD =====
+function showChangePwModal(){document.getElementById('oldPw').value='';document.getElementById('newPw').value='';document.getElementById('confirmPw').value='';document.getElementById('changePwModal').classList.add('active');}
+function closeModal(id){document.getElementById(id).classList.remove('active');}
+function doChangePassword(){
+  var oldPw=document.getElementById('oldPw').value.trim();
+  var newPw=document.getElementById('newPw').value.trim();
+  var confirmPw=document.getElementById('confirmPw').value.trim();
+  if(!oldPw||!newPw){showToast('Vui lòng nhập đầy đủ');return;}
+  if(newPw!==confirmPw){showToast('Mật khẩu mới không khớp');return;}
+  if(newPw.length<4){showToast('Mật khẩu tối thiểu 4 ký tự');return;}
+  apiCall({action:'changePassword',empId:currentUser.empId,oldPassword:oldPw,newPassword:newPw},function(res){
+    if(res.success){showToast('Đổi mật khẩu thành công!');closeModal('changePwModal');}
+    else{showToast('Lỗi: '+res.error);}
+  });
+}
+
+// ===== TABS =====
+function switchTab(tab,btn){
+  document.querySelectorAll('.tab-content').forEach(function(el){el.classList.remove('active');});
+  document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active');});
+  document.getElementById('tab'+tab.charAt(0).toUpperCase()+tab.slice(1)).classList.add('active');
+  btn.classList.add('active');
+  if(tab==='attendance')loadAttendance();
+  if(tab==='payroll')loadPayroll();
+}
+function initMonthSelectors(){
+  var now=new Date();var html='';
+  for(var i=0;i<6;i++){var d=new Date(now.getFullYear(),now.getMonth()-i,1);var val=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');html+='<option value="'+val+'">T'+(d.getMonth()+1)+'/'+d.getFullYear()+'</option>';}
+  document.getElementById('attMonth').innerHTML=html;
+  document.getElementById('payMonth').innerHTML=html;
+}
+
+// ===== TAB 1: ĐĂNG KÝ CA =====
+var regPeriodStart='';
+var regPeriodEnd='';
+
+function normalizeDate(s){
+  // Convert any date format to YYYY-MM-DD
+  if(!s)return '';
+  s=String(s).trim();
+  // Already YYYY-MM-DD?
+  if(/^\d{4}-\d{2}-\d{2}$/.test(s))return s;
+  // Try parsing as Date object string (e.g. "Sun May 25 2026...")
+  var d=new Date(s);
+  if(!isNaN(d.getTime())){
+    return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+  }
+  return s;
+}
+
+function loadRegisterWeek(){
+  // Fetch active period from server
+  apiCall({action:'getRegPeriod'},function(res){
+    if(res.success&&res.startDate&&res.endDate){
+      regPeriodStart=normalizeDate(res.startDate);
+      regPeriodEnd=normalizeDate(res.endDate);
+      currentWeekKey=regPeriodStart+'_'+regPeriodEnd;
+    } else {
+      // Fallback: next Monday to Sunday
+      var now=new Date();var dow=now.getDay();
+      var diff=(1-dow+7)%7;if(diff===0)diff=7;
+      var nextMon=new Date(now);nextMon.setDate(now.getDate()+diff);
+      var nextSun=new Date(nextMon);nextSun.setDate(nextMon.getDate()+6);
+      regPeriodStart=nextMon.getFullYear()+'-'+String(nextMon.getMonth()+1).padStart(2,'0')+'-'+String(nextMon.getDate()).padStart(2,'0');
+      regPeriodEnd=nextSun.getFullYear()+'-'+String(nextSun.getMonth()+1).padStart(2,'0')+'-'+String(nextSun.getDate()).padStart(2,'0');
+      currentWeekKey=regPeriodStart+'_'+regPeriodEnd;
     }
-    errEl.style.display='none';
-    currentEmp=emp;
-    localStorage.setItem('qg_cc_user',emp.id);
-    showMainScreen();
+    // Now check lock + existing registration
+    var lockResult=null,regResult=null,done=0;
+    function checkDone(){
+      done++;if(done<2)return;
+      if(lockResult&&lockResult.success&&lockResult.locked){showRegLocked();return;}
+      regEditCount=(regResult&&regResult.success?regResult.editCount:0)||0;
+      renderRegisterForm(regResult&&regResult.success?regResult:null);
+    }
+    apiCall({action:'getRegLock',weekKey:currentWeekKey},function(r){lockResult=r;checkDone();});
+    apiCall({action:'getMyRegistration',empId:currentUser.empId,weekKey:currentWeekKey},function(r){regResult=r;checkDone();});
+  });
 }
-function doLogout(){
-    currentEmp=null;localStorage.removeItem('qg_cc_user');
-    stopGPS();if(clockInterval)clearInterval(clockInterval);if(window._healthInterval){clearInterval(window._healthInterval);window._healthInterval=null;}
-    document.getElementById('loginScreen').style.display='block';
-    document.getElementById('mainScreen').style.display='none';
-    document.getElementById('loginCode').value='';
+
+function showRegLocked(){
+  document.getElementById('regLoadingIndicator').style.display='none';
+  var sd=new Date(regPeriodStart),ed=new Date(regPeriodEnd);
+  var weekLabel=sd.getDate()+'/'+(sd.getMonth()+1)+' - '+ed.getDate()+'/'+(ed.getMonth()+1)+'/'+ed.getFullYear();
+  document.getElementById('registerWeekLabel').textContent=weekLabel;
+  document.getElementById('regEditInfo').innerHTML='';
+  document.getElementById('registerContent').style.display='none';
+  document.getElementById('regSubmitArea').style.display='none';
+  document.getElementById('regSummary').style.display='none';
+  document.getElementById('regDoneStatus').style.display='block';
+  document.getElementById('regDoneStatus').innerHTML='<div class="reg-status" style="background:#fff3e0"><i class="fas fa-lock" style="color:#e65100"></i><div class="msg" style="color:#e65100">Đăng ký đã bị khóa</div><div class="sub">Quản lý đã khóa đăng ký ca. Liên hệ quản lý nếu cần thay đổi.</div></div>';
 }
-function autoLogin(){
-    var savedId=localStorage.getItem('qg_cc_user');
-    if(savedId){
-        var emp=EMPLOYEES.find(function(e){return e.id===savedId;});
-        if(emp){
-            // Nếu thiết bị bị khóa bởi NV khác (ví dụ NV A logout, NV B auto-login)
-            if(isDeviceLockedForOther(emp.id)){
-                localStorage.removeItem('qg_cc_user');
-                return; // Không auto-login, hiện màn hình đăng nhập
+
+var _lastRegExistingData=null;
+function renderRegisterForm(existingData){
+  _lastRegExistingData=existingData;
+  document.getElementById('regLoadingIndicator').style.display='none';
+  var existing={};
+  if(existingData&&existingData.shifts){existingData.shifts.forEach(function(s){
+    // Normalize times from API (Google Sheets may return Date objects as strings)
+    s.start=normalizeTime(s.start||'');
+    s.end=normalizeTime(s.end||'');
+    existing[s.date]=s;
+  });}
+  var editInfoEl=document.getElementById('regEditInfo');
+  var locked=regEditCount>=2;
+
+  if(locked){
+    editInfoEl.innerHTML='<div class="reg-edit-info"><i class="fas fa-lock"></i> Đã dùng hết 2 lượt</div>';
+    document.getElementById('regSubmitArea').style.display='none';
+    document.getElementById('registerContent').style.display='none';
+    document.getElementById('regDoneStatus').style.display='block';
+    document.getElementById('regDoneStatus').innerHTML='<div class="reg-status"><i class="fas fa-check-circle"></i><div class="msg">Đã hoàn tất đăng ký ca</div><div class="sub">Đã sử dụng 2/2 lượt. Liên hệ quản lý nếu cần thay đổi.</div></div>';
+    document.getElementById('regSummary').style.display='none';
+  } else if(regEditCount===1){
+    editInfoEl.innerHTML='<div class="reg-edit-info" style="background:#e8f5e9;color:var(--success)"><i class="fas fa-check-circle"></i> Đã đăng ký thành công (còn 1 lần chỉnh sửa)</div>';
+    document.getElementById('regSubmitArea').style.display='none';
+    document.getElementById('registerContent').style.display='none';
+    document.getElementById('regDoneStatus').style.display='none';
+    showRegSummary(existingData, true);
+  } else {
+    editInfoEl.innerHTML='';
+    document.getElementById('regSubmitArea').style.display='block';
+    document.getElementById('registerContent').style.display='block';
+    document.getElementById('regDoneStatus').style.display='none';
+    document.getElementById('regSummary').style.display='none';
+    document.getElementById('btnSubmitReg').innerHTML='<i class="fas fa-paper-plane"></i> Gửi đăng ký';
+  }
+
+  // Build dates from regPeriodStart to regPeriodEnd
+  var startD=new Date(regPeriodStart+'T00:00:00');
+  var endD=new Date(regPeriodEnd+'T00:00:00');
+  var weekLabel=startD.getDate()+'/'+(startD.getMonth()+1)+' - '+endD.getDate()+'/'+(endD.getMonth()+1)+'/'+endD.getFullYear();
+
+  var h='';var idx=0;
+  var cur=new Date(startD);
+  while(cur<=endD){
+    var dateStr=cur.getFullYear()+'-'+String(cur.getMonth()+1).padStart(2,'0')+'-'+String(cur.getDate()).padStart(2,'0');
+    var dw=cur.getDay();var isWE=dw===0||dw===6;
+    var dayLabel=dayNames[dw]+' ('+String(cur.getDate()).padStart(2,'0')+'/'+String(cur.getMonth()+1).padStart(2,'0')+')';
+
+    var ex=existing[dateStr];var exStart=ex?ex.start:'';var exEnd=ex?ex.end:'';var exReason=ex?(ex.offReason||''):'';
+    var selectedShifts=[];var isOff=false;var isCustom=false;var customStart='08:00';var customEnd='15:00';
+    if(ex){
+      if(!exStart&&!exEnd){isOff=true;}
+      else{
+        var parts=exStart.split(',');var endParts=exEnd.split(',');
+        for(var p=0;p<parts.length;p++){
+          var matchedPreset=false;
+          for(var si=0;si<SHIFTS.length;si++){if(parts[p]===SHIFTS[si].start&&endParts[p]===SHIFTS[si].end){selectedShifts.push(SHIFTS[si].id);matchedPreset=true;break;}}
+          if(!matchedPreset&&parts[p]){isCustom=true;customStart=parts[p];customEnd=endParts[p]||'23:00';}
+        }
+      }
+    }
+
+    h+='<div class="reg-card" data-date="'+dateStr+'" data-weekend="'+(isWE?'1':'0')+'" data-idx="'+idx+'">';
+    h+='<div class="reg-card-header"><div class="reg-day-label'+(isWE?' weekend':'')+'">'+dayLabel+(isWE?' <span class="required">*</span>':'')+'</div></div>';
+    h+='<div class="reg-options">';
+    SHIFTS.forEach(function(s){
+      var checked=selectedShifts.indexOf(s.id)>=0;
+      h+='<label class="reg-opt" style="background:'+s.color+';border-radius:8px;padding:10px 12px;margin-bottom:4px">';
+      h+='<input type="checkbox" class="shift-cb" data-shift="'+s.id+'" data-start="'+s.start+'" data-end="'+s.end+'"'+(checked?' checked':'')+(locked?' disabled':'')+' onchange="onShiftChange(this)">';
+      h+='<span class="reg-opt-label">'+s.label+'</span><span class="reg-opt-time">'+s.start+' - '+s.end+'</span></label>';
+    });
+    h+='<label class="reg-opt off-opt"><input type="checkbox" class="off-cb"'+(isOff?' checked':'')+(locked?' disabled':'')+' onchange="onOffChange(this)"><span class="reg-opt-label"><i class="fas fa-ban"></i> OFF</span></label>';
+    h+='<div class="reg-reason-box'+(isOff&&isWE?' show':'')+'"><div class="reason-hint"><i class="fas fa-comment-dots"></i> Lý do nghỉ T7/CN:</div><textarea class="reg-off-reason" placeholder="VD: Có lịch học, việc gia đình..."'+(locked?' disabled':'')+'>'+exReason+'</textarea></div>';
+    h+='<label class="reg-opt"><input type="checkbox" class="custom-cb"'+(isCustom?' checked':'')+(locked?' disabled':'')+' onchange="onCustomChange(this)"><span class="reg-opt-label"><i class="fas fa-clock"></i> Thời gian khác</span></label>';
+    h+='<div class="reg-custom-time'+(isCustom?' show':'')+'"><select class="time-select custom-start"'+(locked?' disabled':'')+'>'+timeOptions(customStart)+'</select><span class="time-separator">~</span><select class="time-select custom-end"'+(locked?' disabled':'')+'>'+timeOptions(customEnd)+'</select></div>';
+    h+='</div></div>';
+    cur.setDate(cur.getDate()+1);idx++;
+  }
+  document.getElementById('registerWeekLabel').textContent=weekLabel;
+  document.getElementById('registerContent').innerHTML=h;
+}
+
+function onShiftChange(cb){var card=cb.closest('.reg-card');if(cb.checked){var offCb=card.querySelector('.off-cb');if(offCb){offCb.checked=false;}hideReason(card);}}
+function onOffChange(cb){var card=cb.closest('.reg-card');if(cb.checked){card.querySelectorAll('.shift-cb,.custom-cb').forEach(function(c){c.checked=false;});card.querySelector('.reg-custom-time').classList.remove('show');if(card.getAttribute('data-weekend')==='1'){card.querySelector('.reg-reason-box').classList.add('show');}}else{hideReason(card);}}
+function onCustomChange(cb){var card=cb.closest('.reg-card');var timeRow=card.querySelector('.reg-custom-time');if(cb.checked){timeRow.classList.add('show');var offCb=card.querySelector('.off-cb');if(offCb){offCb.checked=false;}hideReason(card);}else{timeRow.classList.remove('show');}}
+function hideReason(card){card.querySelector('.reg-reason-box').classList.remove('show');}
+
+function submitRegistration(){
+  if(!API_URL){showToast('Chưa cấu hình API');return;}
+  var cards=document.querySelectorAll('#registerContent .reg-card');
+  var shifts=[];var hasError=false;
+  cards.forEach(function(card){
+    var dateStr=card.getAttribute('data-date');
+    var isWE=card.getAttribute('data-weekend')==='1';
+    var offCb=card.querySelector('.off-cb');var isOff=offCb&&offCb.checked;
+    if(isOff){
+      var reason='';
+      if(isWE){var ta=card.querySelector('.reg-off-reason');reason=ta?ta.value.trim():'';if(!reason){hasError=true;if(ta){ta.style.borderColor='#c62828';ta.placeholder='Bắt buộc ghi lý do!';}}}
+      shifts.push({date:dateStr,start:'',end:'',offReason:reason||'OFF',isOff:true});return;
+    }
+    var starts=[];var ends=[];
+    card.querySelectorAll('.shift-cb:checked').forEach(function(cb){starts.push(cb.getAttribute('data-start'));ends.push(cb.getAttribute('data-end'));});
+    var customCb=card.querySelector('.custom-cb');
+    if(customCb&&customCb.checked){starts.push(card.querySelector('.custom-start').value);ends.push(card.querySelector('.custom-end').value);}
+    if(starts.length===0){shifts.push({date:dateStr,start:'',end:'',offReason:''});}
+    else{shifts.push({date:dateStr,start:starts.join(','),end:ends.join(','),offReason:''});}
+  });
+  if(hasError){showToast('Vui lòng ghi lý do nghỉ T7/CN');return;}
+  var emptyDays=[];
+  shifts.forEach(function(s){
+    if(!s.start&&!s.end&&!s.offReason){
+      var d=new Date(s.date);var dw=d.getDay();
+      emptyDays.push(dayNames[dw]+' '+String(d.getDate()).padStart(2,'0')+'/'+String(d.getMonth()+1).padStart(2,'0'));
+    }
+  });
+  if(emptyDays.length>0){showToast('Chưa chọn ca: '+emptyDays.join(', '));return;}
+  var btn=document.getElementById('btnSubmitReg');
+  btn.innerHTML='<i class="fas fa-spinner fa-spin"></i> Đang gửi...';btn.style.pointerEvents='none';
+  apiCall({action:'registerShift',empId:currentUser.empId,weekKey:currentWeekKey,shifts:JSON.stringify(shifts)},function(res){
+    if(res.success){
+      regEditCount=res.editCount;
+      if(res.remaining<=0){
+        document.getElementById('regSubmitArea').style.display='none';
+        document.getElementById('registerContent').style.display='none';
+        document.getElementById('regDoneStatus').style.display='block';
+        document.getElementById('regDoneStatus').innerHTML='<div class="reg-status"><i class="fas fa-check-circle"></i><div class="msg">Đã hoàn tất đăng ký ca!</div><div class="sub">Đã sử dụng 2/2 lượt.</div></div>';
+        document.getElementById('regEditInfo').innerHTML='<div class="reg-edit-info"><i class="fas fa-lock"></i> Đã dùng hết 2 lượt</div>';
+        showRegSummaryFromForm(false);
+      } else {
+        showToast('Đăng ký thành công!');
+        document.getElementById('regEditInfo').innerHTML='<div class="reg-edit-info" style="background:#e8f5e9;color:var(--success)"><i class="fas fa-check-circle"></i> Đã đăng ký thành công (còn '+(res.remaining||1)+' lần chỉnh sửa)</div>';
+        document.getElementById('regSubmitArea').style.display='none';
+        document.getElementById('registerContent').style.display='none';
+        showRegSummaryFromForm(true);
+      }
+    } else {
+      showToast('Lỗi: '+res.error);
+      btn.innerHTML='<i class="fas fa-paper-plane"></i> Gửi đăng ký';btn.style.pointerEvents='';
+    }
+  });
+}
+
+// ===== REG SUMMARY =====
+function showRegSummary(existingData, showEditBtn){
+  var shifts=existingData&&existingData.shifts?existingData.shifts:[];
+  document.getElementById('regSummary').innerHTML=buildSummaryHtml(shifts, showEditBtn!==false);
+  document.getElementById('regSummary').style.display='block';
+}
+function showRegSummaryFromForm(showEditBtn){
+  var cards=document.querySelectorAll('#registerContent .reg-card');
+  var shifts=[];
+  cards.forEach(function(card){
+    var dateStr=card.getAttribute('data-date');
+    var offCb=card.querySelector('.off-cb');var isOff=offCb&&offCb.checked;
+    if(isOff){var ta=card.querySelector('.reg-off-reason');shifts.push({date:dateStr,start:'',end:'',offReason:ta?ta.value.trim():''});return;}
+    var starts=[];var ends=[];
+    card.querySelectorAll('.shift-cb:checked').forEach(function(cb){starts.push(cb.getAttribute('data-start'));ends.push(cb.getAttribute('data-end'));});
+    var customCb=card.querySelector('.custom-cb');
+    if(customCb&&customCb.checked){starts.push(card.querySelector('.custom-start').value);ends.push(card.querySelector('.custom-end').value);}
+    shifts.push({date:dateStr,start:starts.join(','),end:ends.join(','),offReason:''});
+  });
+  document.getElementById('regSummary').innerHTML=buildSummaryHtml(shifts, showEditBtn!==false);
+  document.getElementById('regSummary').style.display='block';
+}
+function buildSummaryHtml(shifts, showEditBtn){
+  var h='<div class="reg-summary-box"><div class="reg-summary-title"><i class="fas fa-calendar-check"></i> Lịch đã đăng ký</div>';
+  shifts.forEach(function(s){
+    var d=new Date(s.date+'T00:00:00');var dw=d.getDay();
+    var dayLabel=dayNames[dw]+' '+String(d.getDate()).padStart(2,'0')+'/'+String(d.getMonth()+1).padStart(2,'0');
+    var detail='';
+    var startNorm=normalizeTime(s.start||'');
+    var endNorm=normalizeTime(s.end||'');
+    if(!startNorm&&!endNorm){var reason=s.offReason&&s.offReason!=='OFF'?s.offReason:'';detail='<span class="sum-off"><i class="fas fa-ban"></i> OFF'+(reason?' - '+reason:'')+'</span>';}
+    else{
+      var parts=startNorm.split(',');var endParts=endNorm.split(',');var labels=[];
+      for(var p=0;p<parts.length;p++){
+        var ps=parts[p].trim();var pe=endParts[p]?endParts[p].trim():'';
+        var matched=false;
+        for(var si=0;si<SHIFTS.length;si++){if(ps===SHIFTS[si].start&&pe===SHIFTS[si].end){labels.push(SHIFTS[si].label+' ('+SHIFTS[si].start+'-'+SHIFTS[si].end+')');matched=true;break;}}
+        if(!matched&&ps)labels.push(ps+'-'+pe);
+      }
+      detail='<span class="sum-shift">'+labels.join(', ')+'</span>';
+    }
+    h+='<div class="sum-row"><span class="sum-day">'+dayLabel+'</span>'+detail+'</div>';
+  });
+  if(showEditBtn){h+='<button class="btn btn-primary" style="margin-top:16px" onclick="openEditReg()"><i class="fas fa-edit"></i> Chỉnh sửa đăng ký</button>';}
+  h+='</div>';
+  return h;
+}
+function openEditReg(){
+  // Re-check lock status before allowing edit
+  apiCall({action:'getRegLock',weekKey:currentWeekKey},function(r){
+    if(r&&r.success&&r.locked){
+      showToast('Đăng ký đã bị khóa bởi quản lý!');
+      showRegLocked();
+      return;
+    }
+    _doOpenEditReg();
+  });
+}
+function _doOpenEditReg(){
+  document.getElementById('regSummary').style.display='none';
+  document.getElementById('regDoneStatus').style.display='none';
+  // Re-render form with existing data pre-filled
+  if(_lastRegExistingData){
+    document.getElementById('regEditInfo').innerHTML='<div class="reg-edit-info" style="background:#fff3e0;color:#e65100"><i class="fas fa-edit"></i> Đang chỉnh sửa đăng ký</div>';
+    // Force show form
+    document.getElementById('regSubmitArea').style.display='block';
+    document.getElementById('registerContent').style.display='block';
+    // Re-build form with pre-filled data
+    var existing={};
+    if(_lastRegExistingData.shifts){_lastRegExistingData.shifts.forEach(function(s){existing[s.date]=s;});}
+    var startD=new Date(regPeriodStart+'T00:00:00');
+    var endD=new Date(regPeriodEnd+'T00:00:00');
+    var h='';var idx=0;var cur=new Date(startD);
+    while(cur<=endD){
+      var dateStr=cur.getFullYear()+'-'+String(cur.getMonth()+1).padStart(2,'0')+'-'+String(cur.getDate()).padStart(2,'0');
+      var dw=cur.getDay();var isWE=dw===0||dw===6;
+      var dayLabel=dayNames[dw]+' ('+String(cur.getDate()).padStart(2,'0')+'/'+String(cur.getMonth()+1).padStart(2,'0')+')';
+      var ex=existing[dateStr];var exStart=ex?ex.start:'';var exEnd=ex?ex.end:'';var exReason=ex?(ex.offReason||''):'';
+      var selectedShifts=[];var isOff=false;var isCustom=false;var customStart='08:00';var customEnd='15:00';
+      if(ex){
+        if(!exStart&&!exEnd){isOff=true;}
+        else{
+          var parts=exStart.split(',');var endParts=exEnd.split(',');
+          for(var p=0;p<parts.length;p++){
+            var matchedPreset=false;
+            for(var si=0;si<SHIFTS.length;si++){if(parts[p]===SHIFTS[si].start&&endParts[p]===SHIFTS[si].end){selectedShifts.push(SHIFTS[si].id);matchedPreset=true;break;}}
+            if(!matchedPreset&&parts[p]){isCustom=true;customStart=parts[p];customEnd=endParts[p]||'23:00';}
+          }
+        }
+      }
+      h+='<div class="reg-card" data-date="'+dateStr+'" data-weekend="'+(isWE?'1':'0')+'" data-idx="'+idx+'">';
+      h+='<div class="reg-card-header"><div class="reg-day-label'+(isWE?' weekend':'')+'">'+dayLabel+(isWE?' <span class="required">*</span>':'')+'</div></div>';
+      h+='<div class="reg-options">';
+      SHIFTS.forEach(function(s){
+        var checked=selectedShifts.indexOf(s.id)>=0;
+        h+='<label class="reg-opt" style="background:'+s.color+';border-radius:8px;padding:10px 12px;margin-bottom:4px">';
+        h+='<input type="checkbox" class="shift-cb" data-shift="'+s.id+'" data-start="'+s.start+'" data-end="'+s.end+'"'+(checked?' checked':'')+' onchange="onShiftChange(this)">';
+        h+='<span class="reg-opt-label">'+s.label+'</span><span class="reg-opt-time">'+s.start+' - '+s.end+'</span></label>';
+      });
+      h+='<label class="reg-opt off-opt"><input type="checkbox" class="off-cb"'+(isOff?' checked':'')+' onchange="onOffChange(this)"><span class="reg-opt-label"><i class="fas fa-ban"></i> OFF</span></label>';
+      h+='<div class="reg-reason-box'+(isOff&&isWE?' show':'')+'"><div class="reason-hint"><i class="fas fa-comment-dots"></i> Lý do nghỉ T7/CN:</div><textarea class="reg-off-reason" placeholder="VD: Có lịch học, việc gia đình...">'+exReason+'</textarea></div>';
+      h+='<label class="reg-opt"><input type="checkbox" class="custom-cb"'+(isCustom?' checked':'')+' onchange="onCustomChange(this)"><span class="reg-opt-label"><i class="fas fa-clock"></i> Thời gian khác</span></label>';
+      h+='<div class="reg-custom-time'+(isCustom?' show':'')+'"><select class="time-select custom-start">'+timeOptions(customStart)+'</select><span class="time-separator">~</span><select class="time-select custom-end">'+timeOptions(customEnd)+'</select></div>';
+      h+='</div></div>';
+      cur.setDate(cur.getDate()+1);idx++;
+    }
+    document.getElementById('registerContent').innerHTML=h;
+  } else {
+    document.getElementById('registerContent').style.display='block';
+    document.getElementById('regSubmitArea').style.display='block';
+  }
+  document.getElementById('btnSubmitReg').innerHTML='<i class="fas fa-edit"></i> Lưu chỉnh sửa';
+  document.getElementById('btnSubmitReg').style.pointerEvents='';
+}
+
+// ===== TAB 2: LỊCH LÀM =====
+var dayNamesVN=['CN','T2','T3','T4','T5','T6','T7'];
+var monthNamesVN=['','Tháng 1','Tháng 2','Tháng 3','Tháng 4','Tháng 5','Tháng 6','Tháng 7','Tháng 8','Tháng 9','Tháng 10','Tháng 11','Tháng 12'];
+
+function normalizeTime(timeStr) {
+  if (!timeStr) return '';
+  var s = String(timeStr).trim();
+  if (/^\d{1,2}:\d{2}$/.test(s)) return s.padStart(5,'0');
+  if (s.indexOf(',') >= 0) return s.split(',').map(function(t){return normalizeTime(t.trim());}).join(',');
+  var isoMatch = s.match(/T(\d{2}):(\d{2})/);
+  if (isoMatch) return isoMatch[1]+':'+isoMatch[2];
+  var dateStrMatch = s.match(/\d{4}\s+(\d{1,2}):(\d{2}):(\d{2})/);
+  if (dateStrMatch) return String(parseInt(dateStrMatch[1])).padStart(2,'0')+':'+dateStrMatch[2];
+  var hmsMatch = s.match(/^(\d{1,2}):(\d{2}):(\d{2})/);
+  if (hmsMatch) return String(parseInt(hmsMatch[1])).padStart(2,'0')+':'+hmsMatch[2];
+  return s;
+}
+
+function normalizeDate(dateStr) {
+  if (!dateStr) return '';
+  var s = String(dateStr).trim();
+  if (/^\d{4}-\d{2}-\d{2}$/.test(s)) return s;
+  var d = new Date(s);
+  if (isNaN(d.getTime())) return s;
+  return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+}
+
+function loadSchedule(){
+  if(!API_URL)return;
+  // Load my schedule
+  apiCall({action:'getSchedule',empId:currentUser.empId},function(res){
+    if(!res.success||!res.schedule||res.schedule.length===0){
+      document.getElementById('scheduleContent').innerHTML='<div class="no-data"><i class="fas fa-calendar-times"></i>Boss chưa phát lịch làm.</div>';
+      document.getElementById('scheduleStatus').className='status-badge status-unpublished';
+      document.getElementById('scheduleStatus').textContent='Chưa phát';
+      return;
+    }
+    document.getElementById('scheduleStatus').className='status-badge status-published';
+    document.getElementById('scheduleStatus').textContent='Đã phát';
+    renderMySchedule(res.schedule);
+  });
+  // Load team schedule
+  loadTeamSchedule();
+}
+
+function getShiftColorClass(startTime) {
+  var h = parseInt(startTime.split(':')[0]);
+  if (h >= 7 && h < 11) return 'shift-sang';
+  if (h >= 11 && h < 16) return 'shift-trua';
+  if (h >= 16) return 'shift-toi';
+  return 'shift-other';
+}
+function getShiftColor(startTime) {
+  var h = parseInt(startTime.split(':')[0]);
+  if (h >= 7 && h < 11) return {bg:'#fff3e0',text:'#e65100'};
+  if (h >= 11 && h < 16) return {bg:'#e3f2fd',text:'#1565c0'};
+  if (h >= 16) return {bg:'#ede7f6',text:'#4527a0'};
+  return {bg:'#e8f5e9',text:'#1b5e20'};
+}
+
+// Parse task string: supports "name|icon|color;;name2|icon2|color2" (new) and "name,name2" (old)
+function parseTaskStr(taskStr) {
+  if (!taskStr) return [];
+  var str = String(taskStr).trim();
+  if (!str) return [];
+  var tasks = [];
+  // Split by ;; first (multiple tasks), then handle each part
+  var parts = str.indexOf(';;') >= 0 ? str.split(';;') : [str];
+  parts.forEach(function(part) {
+    part = part.trim();
+    if (!part) return;
+    if (part.indexOf('|') >= 0) {
+      // New format: name|icon|color
+      var p = part.split('|');
+      if (p[0] && p[0].trim()) tasks.push({name:p[0].trim(), icon:p[1]||'fa-circle', color:p[2]||'#546e7a'});
+    } else {
+      // Old format: plain name (might be comma-separated)
+      part.split(',').forEach(function(t) {
+        if (t.trim()) tasks.push({name:t.trim(), icon:'fa-circle', color:'#546e7a'});
+      });
+    }
+  });
+  return tasks;
+}
+// Collect unique tasks for legend
+function collectTaskLegend(scheduleList) {
+  var seen = {};
+  var legend = [];
+  scheduleList.forEach(function(s) {
+    var tasks = parseTaskStr(s.task);
+    tasks.forEach(function(t) {
+      if (!seen[t.name]) { seen[t.name] = true; legend.push(t); }
+    });
+  });
+  return legend;
+}
+function renderTaskLegendHtml(legend) {
+  if (legend.length === 0) return '';
+  var h = '<div style="display:flex;flex-wrap:wrap;gap:6px;padding:8px 4px;margin-top:6px;border-top:1px solid #eee">';
+  h += '<span style="font-size:10px;color:#888;font-weight:600;margin-right:2px"><i class="fas fa-info-circle"></i> Task:</span>';
+  legend.forEach(function(t) {
+    h += '<span style="display:inline-flex;align-items:center;gap:3px;font-size:10px;color:#555"><i class="fas '+(t.icon||'fa-circle')+'" style="color:'+t.color+';font-size:12px"></i> '+t.name+'</span>';
+  });
+  h += '</div>';
+  return h;
+}
+
+function renderMySchedule(schedule) {
+  var h='<div id="myScheduleCapture" style="background:white;padding:12px;border-radius:10px;overflow:visible">';
+  h+='<div style="text-align:center;margin-bottom:8px;font-weight:800;font-size:15px;color:#8B0000"><i class="fas fa-calendar-alt"></i> Lịch Làm Việc — '+currentUser.name+'</div>';
+  h+='<div class="schedule-grid" style="overflow:visible">';
+  schedule.forEach(function(s){
+    var dateStr = normalizeDate(s.date);
+    var d = new Date(dateStr+'T00:00:00');
+    var dw = d.getDay();
+    var isWE = dw===0||dw===6;
+    var ns = normalizeTime(s.start);
+    var ne = normalizeTime(s.end);
+    var hasShift = ns && ns!=='';
+    var cardClass = 'schedule-card';
+    if (hasShift) cardClass += ' has-shift';
+    else cardClass += ' off-day';
+    if (isWE) cardClass += ' weekend';
+    h+='<div class="'+cardClass+'">';
+    h+='<div class="sc-day">'+dayNamesVN[dw]+'</div>';
+    h+='<div class="sc-date">'+d.getDate()+'</div>';
+    h+='<div class="sc-fulldate">'+monthNamesVN[d.getMonth()+1]+' '+d.getFullYear()+'</div>';
+    if(hasShift){
+      var sParts=ns.split(','),eParts=ne.split(',');
+      for(var si=0;si<sParts.length;si++){
+        if(sParts[si]) {
+          var shiftCol = getShiftColor(sParts[si]);
+          h+='<div class="sc-shift" style="background:'+shiftCol.bg+';color:'+shiftCol.text+'">'+sParts[si]+' - '+(eParts[si]||'')+'</div>';
+        }
+      }
+      // Show task icons
+      var parsedTasks=parseTaskStr(s.task);
+      if(parsedTasks.length){
+        parsedTasks.forEach(function(t){
+          h+='<div style="margin-top:3px;display:inline-block" title="'+t.name+'"><i class="fas '+t.icon+'" style="color:'+t.color+';font-size:14px"></i></div> ';
+        });
+      }
+    } else {
+      h+='<div class="sc-off"><i class="fas fa-moon"></i> OFF</div>';
+    }
+    h+='</div>';
+  });
+  h+='</div>';
+  h+=renderTaskLegendHtml(collectTaskLegend(schedule));
+  h+='</div>';
+  document.getElementById('scheduleContent').innerHTML=h;
+}
+function saveMyScheduleImage(){
+  var el=document.getElementById('myScheduleCapture');
+  if(!el){alert('Chưa có lịch để lưu!');return;}
+  var btn=event.target.closest('button');
+  var oldText=btn.innerHTML;
+  btn.innerHTML='<i class="fas fa-spinner fa-spin"></i>';
+  btn.disabled=true;
+  // Force full width and remove overflow constraints for capture
+  var parent=el.parentElement;
+  var origOverflow=parent?parent.style.overflow:'';
+  if(parent)parent.style.overflow='visible';
+  el.style.overflow='visible';
+  el.style.width=el.scrollWidth+'px';
+  el.style.minWidth=el.scrollWidth+'px';
+  html2canvas(el,{
+    scale:2,
+    backgroundColor:'#ffffff',
+    useCORS:true,
+    width:el.scrollWidth,
+    height:el.scrollHeight,
+    windowWidth:el.scrollWidth+40,
+    scrollX:0,scrollY:0,
+    logging:false
+  }).then(function(canvas){
+    var link=document.createElement('a');
+    link.download='LichLamViec_CuaToi.png';
+    link.href=canvas.toDataURL('image/png');
+    link.click();
+    // Restore styles
+    el.style.overflow='';el.style.width='';el.style.minWidth='';
+    if(parent)parent.style.overflow=origOverflow;
+    btn.innerHTML=oldText;btn.disabled=false;
+  }).catch(function(err){
+    el.style.overflow='';el.style.width='';el.style.minWidth='';
+    if(parent)parent.style.overflow=origOverflow;
+    alert('Lỗi: '+err.message);btn.innerHTML=oldText;btn.disabled=false;
+  });
+}
+
+function loadTeamSchedule() {
+  var container = document.getElementById('teamScheduleContent');
+  if(!container) return;
+  // Fetch employee list + all schedule in parallel
+  var empList = null, allSchedule = null, done = 0;
+  var errors = [];
+  function checkDone() {
+    done++;
+    if (done < 2) return;
+    if (!empList || !allSchedule) {
+      container.innerHTML = '<div class="no-data" style="border:2px dashed #e53935;background:#ffebee;color:#c62828;padding:16px;border-radius:10px"><i class="fas fa-exclamation-circle"></i> Không tải được dữ liệu.<br><span style="font-size:11px;color:#888;margin-top:6px;display:block">Lỗi: ' + (errors.join(', ') || 'Không xác định') + '</span></div>';
+      return;
+    }
+    renderTeamSchedule(empList, allSchedule, container);
+  }
+  apiCall({action:'getEmployeeList'}, function(res) {
+    if (res.success) { empList = res.employees; }
+    else { errors.push('getEmployeeList: ' + (res.error||'fail')); }
+    checkDone();
+  });
+  apiCall({action:'getAllSchedule'}, function(res) {
+    if (res.success) {
+      // Filter entry trong (lich da xoa boi boss qua publishSchedule)
+      allSchedule = (res.schedule||[]).filter(function(s){ return s && s.start && s.end; });
+    }
+    else { errors.push('getAllSchedule: ' + (res.error||'fail')); }
+    checkDone();
+  });
+}
+
+function renderTeamSchedule(empList, schedule, container) {
+  if (!schedule || schedule.length === 0) {
+    container.innerHTML = '<div class="no-data"><i class="fas fa-calendar-times"></i>Boss chưa phát lịch làm.</div>';
+    return;
+  }
+  // Build lookup: empId -> date -> {start, end, color, task, dept, empName}
+  var lookup = {};
+  var allDates = {};
+  var empDepts = {};
+  schedule.forEach(function(s) {
+    var eid = String(s.empId).trim();
+    var dateStr = normalizeDate(s.date);
+    if (!lookup[eid]) lookup[eid] = {};
+    lookup[eid][dateStr] = { start: normalizeTime(s.start), end: normalizeTime(s.end), color: s.color||'', task: s.task||'' };
+    allDates[dateStr] = true;
+    if (s.dept) empDepts[eid] = s.dept;
+    if (s.empName && !empDepts['_name_'+eid]) empDepts['_name_'+eid] = s.empName;
+  });
+  var dates = Object.keys(allDates).sort();
+  if (dates.length === 0) {
+    container.innerHTML = '<div class="no-data"><i class="fas fa-calendar-times"></i>Chưa có dữ liệu.</div>';
+    return;
+  }
+  var empMap = {};
+  empList.forEach(function(e) { empMap[e.id] = e.name; if(e.dept) empDepts[e.id] = e.dept; });
+  // Merge empName from schedule data
+  Object.keys(empDepts).forEach(function(k){ if(k.startsWith('_name_')){ var eid=k.substring(6); if(!empMap[eid]) empMap[eid]=empDepts[k]; }});
+  // Group by dept
+  var deptEmps = {'Bếp':[], 'Phục vụ':[], 'Khác':[]};
+  var allEmpIds = [];
+  empList.forEach(function(e) { if (lookup[e.id]) allEmpIds.push(e.id); });
+  // Also add emp ids from schedule that may not be in empList
+  Object.keys(lookup).forEach(function(eid){ if(allEmpIds.indexOf(eid)<0) allEmpIds.push(eid); });
+  allEmpIds.forEach(function(eid) {
+    var dept = empDepts[eid] || 'Khác';
+    if (dept === 'Rửa chén') dept = 'Bếp';
+    if (!deptEmps[dept]) dept = 'Khác';
+    deptEmps[dept].push(eid);
+  });
+  if (allEmpIds.length === 0) {
+    container.innerHTML = '<div class="no-data"><i class="fas fa-calendar-times"></i>Chưa có lịch được phát.</div>';
+    return;
+  }
+  var firstD = new Date(dates[0]+'T00:00:00');
+  var lastD = new Date(dates[dates.length-1]+'T00:00:00');
+
+  function buildDeptTable(title, empIds, captureId) {
+    if (empIds.length === 0) return '';
+    var h = '';
+    h += '<div style="overflow-x:auto;-webkit-overflow-scrolling:touch;margin-bottom:12px"><div id="'+captureId+'" style="background:white;padding:10px;border-radius:10px">';
+    h += '<div style="text-align:center;margin-bottom:8px;font-weight:800;font-size:14px;color:#8B0000"><i class="fas fa-calendar-alt"></i> LỊCH LÀM VIỆC - QUÁCH GIA ('+title+')</div>';
+    h += '<div style="text-align:center;margin-bottom:8px;font-size:11px;color:#666">'+firstD.getDate()+'/'+(firstD.getMonth()+1)+' - '+lastD.getDate()+'/'+(lastD.getMonth()+1)+'/'+lastD.getFullYear()+'</div>';
+    h += '<table class="team-schedule-table"><thead><tr><th style="text-align:left;padding-left:8px">Nhân viên</th>';
+    dates.forEach(function(dateStr) {
+      var d = new Date(dateStr+'T00:00:00');
+      var dw = d.getDay();
+      var isWE = dw===0||dw===6;
+      h += '<th style="min-width:45px;'+(isWE?'background:#5c0000':'')+'">'+dayNamesVN[dw]+'<br>'+d.getDate()+'/'+(d.getMonth()+1)+'</th>';
+    });
+    h += '</tr></thead><tbody>';
+    empIds.forEach(function(eid) {
+      h += '<tr><td class="emp-name">' + (empMap[eid]||eid) + '</td>';
+      dates.forEach(function(dateStr) {
+        var d = new Date(dateStr+'T00:00:00');
+        var dw = d.getDay();
+        var isWE = dw===0||dw===6;
+        var val = lookup[eid] && lookup[eid][dateStr];
+        var weClass = isWE ? ' we-col' : '';
+        if (val && val.start) {
+          var sParts = val.start.split(','), eParts = val.end.split(',');
+          var cellHtml = '';
+          for (var si = 0; si < sParts.length; si++) {
+            if (sParts[si]) {
+              var badgeStyle = '';
+              if (val.color) {
+                badgeStyle = 'background:'+val.color+';color:white;border:1px solid '+val.color;
+              }
+              if (badgeStyle) {
+                cellHtml += '<span class="shift-badge" style="'+badgeStyle+'">' + sParts[si] + '-' + (eParts[si]||'') + '</span>';
+              } else {
+                var sc = getShiftColorClass(sParts[si]);
+                cellHtml += '<span class="shift-badge '+sc+'">' + sParts[si] + '-' + (eParts[si]||'') + '</span>';
+              }
             }
-            currentEmp=emp;showMainScreen();return;
+          }
+          if (val.task) {
+            var parsedT = parseTaskStr(val.task);
+            parsedT.forEach(function(t) {
+              cellHtml += '<span title="'+t.name+'" style="display:inline-block;margin:1px"><i class="fas '+t.icon+'" style="color:'+t.color+';font-size:10px"></i></span>';
+            });
+          }
+          h += '<td class="'+weClass.trim()+'">' + cellHtml + '</td>';
+        } else {
+          h += '<td class="'+weClass.trim()+'" style="background:#000"></td>';
         }
+      });
+      h += '</tr>';
+    });
+    h += '</tbody></table>';
+    // Task legend for this dept
+    var deptLegend = collectTaskLegend(schedule.filter(function(s){ 
+      var eid = String(s.empId).trim();
+      return empIds.indexOf(eid) >= 0;
+    }));
+    h += renderTaskLegendHtml(deptLegend);
+    h += '</div></div>';
+    return h;
+  }
+
+  var html = '';
+  if (deptEmps['Bếp'].length > 0) html += buildDeptTable('Bếp', deptEmps['Bếp'], 'teamScheduleCapture_bep');
+  if (deptEmps['Phục vụ'].length > 0) html += buildDeptTable('Phục vụ', deptEmps['Phục vụ'], 'teamScheduleCapture_pv');
+  if (deptEmps['Khác'].length > 0) html += buildDeptTable('Khác', deptEmps['Khác'], 'teamScheduleCapture_khac');
+  // Wrap everything in one capture div
+  html = '<div id="teamScheduleCapture" style="background:white;padding:10px;border-radius:10px">' + html + '</div>';
+  container.innerHTML = html;
+}
+
+function saveAllTeamScheduleImage() {
+  var el = document.getElementById('teamScheduleCapture');
+  if (!el) { alert('Chưa có bảng lịch để lưu!'); return; }
+  var btn = event.target.closest('button');
+  var oldText = btn.innerHTML;
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+  btn.disabled = true;
+  // Fix cutting off: temporarily expand all overflow wrappers
+  var wrappers = el.querySelectorAll('[style*="overflow"]');
+  var origStyles = [];
+  wrappers.forEach(function(w){ origStyles.push(w.style.overflow); w.style.overflow = 'visible'; });
+  el.style.width = Math.max(el.scrollWidth, el.offsetWidth) + 'px';
+  html2canvas(el, { scale: 2, backgroundColor: '#ffffff', useCORS: true, width: el.scrollWidth, height: el.scrollHeight, scrollX: 0, scrollY: 0, windowWidth: el.scrollWidth + 40 }).then(function(canvas) {
+    var link = document.createElement('a');
+    link.download = 'LichLamViec_QuachGia.png';
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+    btn.innerHTML = oldText; btn.disabled = false;
+    el.style.width = '';
+    wrappers.forEach(function(w,i){ w.style.overflow = origStyles[i]; });
+  }).catch(function(err) {
+    alert('Lỗi tạo ảnh: ' + err.message);
+    btn.innerHTML = oldText; btn.disabled = false;
+    el.style.width = '';
+    wrappers.forEach(function(w,i){ w.style.overflow = origStyles[i]; });
+  });
+}
+
+// ===== TAB 3: CHẤM CÔNG =====
+var QR_SHEET_ID='1EM6yz3VVDnbqsKBDGSHF8w6vwFqB9BMNw3WIf-2iR9Q';
+var QR_SHEET_NAME='ChamCong';
+var GRACE_MINUTES=5; // trừ hao 5 phút
+var myScheduleCache=null; // cache lịch làm
+
+function loadAttendance(){
+  var month=document.getElementById('attMonth').value;
+  if(!month)return;
+  document.getElementById('attendanceContent').innerHTML='<div class="no-data"><i class="fas fa-spinner fa-spin"></i> Đang tải chấm công...</div>';
+  
+  // Load QR attendance + schedule in parallel
+  var qrData=null,schedData=null,done=0;
+  function checkBothDone(){
+    done++;
+    if(done<2)return;
+    if(!qrData){
+      document.getElementById('attendanceContent').innerHTML='<div class="no-data"><i class="fas fa-clipboard-list"></i>Chưa có dữ liệu chấm công tháng này.</div>';
+      return;
     }
-}
-
-// ===== MAIN =====
-function showMainScreen(){
-    document.getElementById('loginScreen').style.display='none';
-    document.getElementById('mainScreen').style.display='block';
-    document.getElementById('empAvatar').textContent=currentEmp.name.charAt(0);
-    document.getElementById('empNameDisplay').textContent=currentEmp.name+' '+currentEmp.nameCN;
-    document.getElementById('empDeptDisplay').textContent=currentEmp.dept;
-    document.getElementById('empTypeDisplay').textContent=currentEmp.type;
-    document.getElementById('empIdDisplay').textContent=currentEmp.id;
-    updateClock();clockInterval=setInterval(updateClock,1000);
-    startGPS();updateDeviceLockBar();checkDeviceAndWarn(currentEmp.id);loadHistory();
-    // Kiểm tra kết nối định kỳ 30s
-    if(window._healthInterval)clearInterval(window._healthInterval);
-    window._healthInterval=setInterval(function(){if(currentEmp)checkConnection();},30000);
-}
-function updateClock(){
-    var now=new Date();
-    document.getElementById('clockTime').textContent=String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0')+':'+String(now.getSeconds()).padStart(2,'0');
-    var days=['Chủ nhật','Thứ 2','Thứ 3','Thứ 4','Thứ 5','Thứ 6','Thứ 7'];
-    document.getElementById('clockDate').textContent=days[now.getDay()]+', '+now.getDate()+'/'+(now.getMonth()+1)+'/'+now.getFullYear();
-}
-
-// ===== LOADING =====
-var _loadingCancelled=false;
-function showLoading(msg){_loadingCancelled=false;document.getElementById('loadingText').textContent=msg||'Đang xử lý...';document.getElementById('loadingOverlay').classList.add('show');}
-function hideLoading(){document.getElementById('loadingOverlay').classList.remove('show');}
-function cancelLoading(){_loadingCancelled=true;hideLoading();showStatus('warning','Đã hủy thao tác. Vui lòng thử lại.');updateButtons();}
-
-// ===== CHECKIN / CHECKOUT =====
-function doCheckin(){
-    if(!gpsOk){showStatus('error','Bạn phải ở trong phạm vi quán!');return;}
-    if(isDeviceLockedForOther(currentEmp.id)){showStatus('error','Thiết bị đã bị khóa bởi NV khác!');return;}
-    showLoading('Đang ghi vào ca...');
-    apiCall({
-        action:'checkin',
-        empId:currentEmp.id,
-        empName:currentEmp.name,
-        distance:currentDistance,
-        deviceId:getDeviceId()
-    }, function(err, data){
-        hideLoading();
-        if(_loadingCancelled)return;
-        if(err){showStatus('error','Lỗi kết nối: '+err.message);return;}
-        if(!data||!data.success){showStatus('error',(data&&data.message)||'Lỗi không xác định');return;}
-        showStatus('success','✅ VÀO CA lúc '+data.time+' — '+data.date);
-        checkedInToday=true;
-        setDeviceLock(currentEmp.id);
-        // Theo dõi thiết bị
-        logUnknownDevice(currentEmp.id, 'checkin');
-        recordDeviceUsage(currentEmp.id, getDeviceId());
-        checkDeviceAndWarn(currentEmp.id);
-        updateButtons();
-        loadHistory();
+    renderAttendance(qrData,schedData,month);
+  }
+  
+  // 1. Fetch QR attendance
+  fetchQRData(month,function(data){qrData=data;checkBothDone();});
+  
+  // 2. Fetch published schedule (for comparison)
+  if(myScheduleCache){
+    schedData=myScheduleCache;
+    done++;
+    if(done>=2)renderAttendance(qrData,schedData,month);
+  }else{
+    apiCall({action:'getSchedule',empId:currentUser.empId},function(res){
+      if(res.success&&res.schedule){
+        // Build lookup: day -> {start, end} for this month
+        var lookup={};
+        res.schedule.forEach(function(s){
+          var dateStr=normalizeDate(s.date);
+          var ns=normalizeTime(s.start),ne=normalizeTime(s.end);
+          lookup[dateStr]={start:ns,end:ne};
+        });
+        myScheduleCache=lookup;
+        schedData=lookup;
+      }
+      checkBothDone();
     });
-}
-function doCheckout(){
-    if(!gpsOk){showStatus('error','Bạn phải ở trong phạm vi quán!');return;}
-    if(isDeviceLockedForOther(currentEmp.id)){showStatus('error','Thiết bị đã bị khóa bởi NV khác!');return;}
-    showLoading('Đang ghi tan ca...');
-    apiCall({
-        action:'checkout',
-        empId:currentEmp.id,
-        empName:currentEmp.name,
-        distance:currentDistance,
-        deviceId:getDeviceId()
-    }, function(err, data){
-        hideLoading();
-        if(_loadingCancelled)return;
-        if(err){showStatus('error','Lỗi kết nối: '+err.message);return;}
-        if(!data||!data.success){showStatus('error',(data&&data.message)||'Lỗi không xác định');return;}
-        var msg='✅ TAN CA lúc '+data.time+' — '+data.date;
-        if(data.hours)msg+=' (Làm '+data.hours+' giờ)';
-        showStatus('success', msg);
-        checkedInToday=false;
-        setDeviceLock(currentEmp.id);
-        // Theo dõi thiết bị
-        logUnknownDevice(currentEmp.id, 'checkout');
-        recordDeviceUsage(currentEmp.id, getDeviceId());
-        checkDeviceAndWarn(currentEmp.id);
-        updateButtons();
-        loadHistory();
-    });
+  }
 }
 
-// ===== STATUS =====
-function showStatus(type,msg){
-    var el=document.getElementById('statusMsg');
-    el.className='status-msg show '+type;
-    el.textContent=msg;
-    setTimeout(function(){el.classList.remove('show');},6000);
-}
-
-// ===== HISTORY =====
-// Parse date — có thể nhận: "03/05/2026", "2026-05-03", "Sun May 03 2026 00:00:00 GMT+0700...", Date ISO string
-function parseDate(v){
-    if(!v)return '';
-    var s=String(v);
-    // Nếu đã đúng format dd/MM/yyyy
-    if(/^\d{2}\/\d{2}\/\d{4}$/.test(s))return s;
-    // Nếu là yyyy-MM-dd
-    if(/^\d{4}-\d{2}-\d{2}$/.test(s)){var p=s.split('-');return p[2]+'/'+p[1]+'/'+p[0];}
-    // Nếu chứa Date string dài → parse
+function fetchQRData(month,callback){
+  var cbName='_attCB_'+Date.now();
+  var url='https://docs.google.com/spreadsheets/d/'+QR_SHEET_ID+'/gviz/tq?tqx=out:json;responseHandler:'+cbName+'&sheet='+encodeURIComponent(QR_SHEET_NAME);
+  
+  window[cbName]=function(resp){
     try{
-        var d=new Date(s);
-        if(!isNaN(d.getTime()))return String(d.getDate()).padStart(2,'0')+'/'+String(d.getMonth()+1).padStart(2,'0')+'/'+d.getFullYear();
-    }catch(e){}
-    return s;
-}
-// Parse time — có thể nhận: "15:41:29", "Sat Dec 30 1899 15:41:29 GMT+0706...", Date ISO
-function parseTime(v){
-    if(!v)return '';
-    var s=String(v);
-    // Nếu đã đúng format HH:mm:ss
-    if(/^\d{2}:\d{2}:\d{2}$/.test(s))return s;
-    // Nếu chứa Date string → tìm giờ bên trong
-    var m=s.match(/(\d{2}:\d{2}:\d{2})/);
-    if(m)return m[1];
-    return s;
-}
-// Lấy ngày hôm nay dạng dd/MM/yyyy để so sánh
-function getTodayVN(){var t=new Date();return String(t.getDate()).padStart(2,'0')+'/'+String(t.getMonth()+1).padStart(2,'0')+'/'+t.getFullYear();}
-function loadHistory(){
-    if(!currentEmp)return;
-    var el=document.getElementById('historyList');
-    el.innerHTML='<div class="no-history"><i class="fas fa-spinner fa-spin"></i> Đang tải...</div>';
-    apiCall({action:'history',empId:currentEmp.id}, function(err, data){
-        if(err||!data||!data.success){el.innerHTML='<div class="no-history"><i class="fas fa-exclamation-circle" style="color:var(--danger)"></i> Không tải được dữ liệu<br><button onclick="loadHistory()" style="margin-top:8px;padding:4px 12px;background:var(--primary);color:white;border:none;border-radius:4px;font-size:12px;cursor:pointer">Thử lại</button></div>';return;}
-        if(!data.records||!data.records.length){
-            checkedInToday=false;updateButtons();
-            el.innerHTML='<div class="no-history">Chưa có dữ liệu chấm công</div>';return;
+      var rows=resp.table.rows;
+      var parts=month.split('-');
+      var targetY=parseInt(parts[0]),targetM=parseInt(parts[1]);
+      var empId=currentUser.empId;
+      var dayMap={};
+      
+      for(var i=1;i<rows.length;i++){
+        var cells=rows[i].c;
+        if(!cells||cells.length<6)continue;
+        var dateStr=cells[1]?cells[1].v:'';
+        var timeStr=cells[2]?cells[2].v:'';
+        var rowEmpId=cells[3]?String(cells[3].v).trim():'';
+        var loai=cells[5]?cells[5].v:'';
+        if(!dateStr||!timeStr||!loai)continue;
+        if(rowEmpId!==empId)continue;
+        
+        var dp=dateStr.split('/');
+        if(dp.length!==3)continue;
+        var dd=parseInt(dp[0]),mm=parseInt(dp[1]),yy=parseInt(dp[2]);
+        if(yy!==targetY||mm!==targetM)continue;
+        
+        var hm=timeStr.substring(0,5);
+        if(!dayMap[dd])dayMap[dd]={checkin:'',checkout:'',cinFull:'',coutFull:''};
+        
+        if(loai==='VÀO CA'){
+          if(!dayMap[dd].cinFull||timeStr<dayMap[dd].cinFull){
+            dayMap[dd].checkin=hm;dayMap[dd].cinFull=timeStr;
+          }
+        }else if(loai==='TAN CA'){
+          if(!dayMap[dd].coutFull||timeStr>dayMap[dd].coutFull){
+            dayMap[dd].checkout=hm;dayMap[dd].coutFull=timeStr;
+          }
         }
-        // Detect trạng thái hôm nay (format dd/MM/yyyy)
-        var todayStr=getTodayVN();
-        var lastTodayType=null;
-        data.records.forEach(function(r){
-            var rd=parseDate(r.date);
-            if(rd===todayStr)lastTodayType=r.type;
-        });
-        checkedInToday=(lastTodayType==='in');
-        updateButtons();
-        // Group records by date
-        var byDate={};var dateOrder=[];
-        data.records.forEach(function(r){
-            var dateStr=parseDate(r.date);
-            if(!byDate[dateStr]){byDate[dateStr]=[];dateOrder.push(dateStr);}
-            byDate[dateStr].push(r);
-        });
-        dateOrder.reverse();
-        var h='';
-        dateOrder.forEach(function(dateStr){
-            var recs=byDate[dateStr];
-            var isToday=(dateStr===todayStr);
-            h+='<div style="margin-top:8px;margin-bottom:4px;font-size:11px;font-weight:700;color:'+(isToday?'var(--primary)':'#999')+';">'+(isToday?'Hôm nay 今天':'')+(isToday?' — ':'')+dateStr+'</div>';
-            // Pair check-in/check-out into segments
-            var segments=[];var pendingIn=null;
-            recs.forEach(function(r){
-                if(r.type==='in'){
-                    if(pendingIn)segments.push({inR:pendingIn,outR:null}); // unpaired in
-                    pendingIn=r;
-                }else{
-                    segments.push({inR:pendingIn,outR:r});
-                    pendingIn=null;
-                }
-            });
-            if(pendingIn)segments.push({inR:pendingIn,outR:null}); // last unpaired in
-            segments.reverse();
-            segments.forEach(function(seg,si){
-                var inTime=seg.inR?parseTime(seg.inR.time):'?';
-                var outTime=seg.outR?parseTime(seg.outR.time):'—';
-                var segLabel='Ca '+(segments.length-si)+' 班次';
-                var hrs='';
-                if(seg.inR&&seg.outR){
-                    // calc hours
-                    var ip=inTime.split(':'),op=outTime.split(':');
-                    var inMin=parseInt(ip[0])*60+parseInt(ip[1]),outMin=parseInt(op[0])*60+parseInt(op[1]);
-                    var diff=(outMin-inMin)/60;
-                    if(diff>0)hrs=diff.toFixed(1)+'h';
-                }
-                h+='<div class="history-item">';
-                h+='<div class="history-icon in"><i class="fas fa-clock"></i></div>';
-                h+='<div style="flex:1"><div class="history-time">'+inTime+' → '+outTime+'</div>';
-                h+='<div class="history-date">'+segLabel+'</div></div>';
-                if(hrs)h+='<div class="history-hours">'+hrs+'</div>';
-                else if(!seg.outR)h+='<div class="history-hours" style="color:var(--success)">Đang làm</div>';
-                h+='</div>';
-            });
-        });
-        el.innerHTML=h;
-    });
-}
-
-// ===== THEO DÕI THIẾT BỊ (Device Tracking) =====
-// Lưu lịch sử thiết bị của NV: qg_cc_devhist_{empId} = [{deviceId, count, lastUsed}]
-// Thiết bị "quen" = thiết bị dùng nhiều nhất (>= 3 lần)
-
-function getDeviceHistory(empId){
-    try{
-        var raw=localStorage.getItem('qg_cc_devhist_'+empId);
-        return raw?JSON.parse(raw):[];
-    }catch(e){return [];}
-}
-function saveDeviceHistory(empId,hist){
-    localStorage.setItem('qg_cc_devhist_'+empId, JSON.stringify(hist));
-}
-function recordDeviceUsage(empId, deviceId){
-    var hist=getDeviceHistory(empId);
-    var found=false;
-    for(var i=0;i<hist.length;i++){
-        if(hist[i].deviceId===deviceId){
-            hist[i].count++;
-            hist[i].lastUsed=getTodayVN();
-            found=true;
-            break;
+      }
+      
+      var attendance=[];
+      for(var day in dayMap){
+        var rec=dayMap[day];
+        if(!rec.checkin&&!rec.checkout)continue;
+        var hrs=0;
+        if(rec.checkin&&rec.checkout){
+          var cin=rec.checkin.split(':'),cout=rec.checkout.split(':');
+          hrs=((parseInt(cout[0])*60+parseInt(cout[1]))-(parseInt(cin[0])*60+parseInt(cin[1])))/60;
+          if(hrs<0)hrs=0;
         }
+        attendance.push({day:parseInt(day),checkin:rec.checkin,checkout:rec.checkout,hours:hrs});
+      }
+      callback(attendance.length>0?attendance:null);
+    }catch(err){
+      console.error('QR parse error:',err);
+      callback(null);
     }
-    if(!found){
-        hist.push({deviceId:deviceId, count:1, lastUsed:getTodayVN(), firstUsed:getTodayVN()});
-    }
-    saveDeviceHistory(empId, hist);
-}
-function isKnownDevice(empId, deviceId){
-    var hist=getDeviceHistory(empId);
-    if(hist.length===0)return true; // Chưa có lịch sử → không cảnh báo
-    for(var i=0;i<hist.length;i++){
-        if(hist[i].deviceId===deviceId && hist[i].count>=3)return true;
-    }
-    // Nếu NV chỉ có 1 thiết bị trong lịch sử và đang dùng thiết bị khác → lạ
-    // Nếu NV chỉ mới dùng (count < 3) → cũng coi là chưa quen
-    var totalDevices=hist.length;
-    var thisDevice=hist.find(function(h){return h.deviceId===deviceId;});
-    if(!thisDevice)return false; // Thiết bị hoàn toàn mới
-    if(thisDevice.count<3)return false; // Thiết bị mới dùng ít lần
-    return true;
-}
-function getPrimaryDevice(empId){
-    var hist=getDeviceHistory(empId);
-    if(!hist.length)return null;
-    hist.sort(function(a,b){return b.count-a.count;});
-    return hist[0];
-}
-function checkDeviceAndWarn(empId){
-    var deviceId=getDeviceId();
-    var bar=document.getElementById('deviceWarnBar');
-    var hist=getDeviceHistory(empId);
-    // Nếu chưa có lịch sử (NV mới) → không cảnh báo
-    if(hist.length===0){bar.classList.remove('show');return false;}
-    if(isKnownDevice(empId, deviceId)){
-        bar.classList.remove('show');
-        return false;
-    }
-    // Thiết bị lạ!
-    var primary=getPrimaryDevice(empId);
-    var msg='Đang chấm công trên thiết bị khác thường!';
-    if(primary)msg+=' (Thiết bị quen đã dùng '+primary.count+' lần)';
-    bar.classList.add('show');
-    document.getElementById('deviceWarnText').textContent=msg;
-    return true;
-}
-function logUnknownDevice(empId, action){
-    var deviceId=getDeviceId();
-    if(isKnownDevice(empId, deviceId))return; // Không cần log
-    // Gửi cảnh báo lên server
-    apiCall({
-        action:'deviceAlert',
-        empId:empId,
-        empName:currentEmp?currentEmp.name:'',
-        deviceId:deviceId,
-        alertType:'unknown_device',
-        checkinAction:action,
-        date:getTodayVN(),
-        time:new Date().toTimeString().substring(0,8)
-    }, function(err, data){
-        // Ghi log — không cần xử lý response
-        console.log('Device alert sent:', err?'error':'ok');
-    });
+    delete window[cbName];
+    var oldScript=document.getElementById('attJsonpScript');
+    if(oldScript)oldScript.remove();
+  };
+  
+  setTimeout(function(){if(window[cbName]){delete window[cbName];callback(null);}},15000);
+  var script=document.createElement('script');
+  script.id='attJsonpScript';script.src=url;
+  document.body.appendChild(script);
 }
 
-// ===== BÁO CÁO THIẾT BỊ (Boss dùng trong console) =====
-// Gõ: viewDeviceReport() trong console để xem tất cả NV và thiết bị
-function viewDeviceReport(){
-    var report=[];
-    EMPLOYEES.forEach(function(emp){
-        var hist=getDeviceHistory(emp.id);
-        if(hist.length>0){
-            report.push({
-                NV:emp.id+' '+emp.name,
-                'Số thiết bị':hist.length,
-                'Chi tiết':hist.map(function(h){return h.deviceId.substring(0,12)+'... ('+h.count+' lần, cuối: '+h.lastUsed+')';}).join(' | ')
-            });
+function timeToMin(t){
+  if(!t)return 0;
+  var p=t.split(':');return parseInt(p[0])*60+parseInt(p[1]);
+}
+
+function renderAttendance(attendance,schedLookup,month){
+  var parts=month.split('-');
+  var year=parseInt(parts[0]),mon=parseInt(parts[1]);
+  var totalH=0,workDays=0,totalOT=0,totalLate=0,lateCount=0,earlyLeaveCount=0;
+  
+  attendance.sort(function(a,b){return a.day-b.day;});
+  
+  // First pass: compute stats with schedule comparison
+  attendance.forEach(function(a){
+    var hrs=parseFloat(a.hours)||0;
+    totalH+=hrs;
+    if(hrs>0)workDays++;
+    
+    // Compare with schedule
+    var dateStr=year+'-'+String(mon).padStart(2,'0')+'-'+String(a.day).padStart(2,'0');
+    var sched=schedLookup?schedLookup[dateStr]:null;
+    if(sched&&sched.start){
+      // Handle multi-shift: use first shift start, last shift end
+      var schedStarts=sched.start.split(','),schedEnds=sched.end.split(',');
+      var schedStartMin=timeToMin(schedStarts[0]);
+      var schedEndMin=timeToMin(schedEnds[schedEnds.length-1]);
+      var schedHours=(schedEndMin-schedStartMin)/60;
+      
+      // Late check (checkin vs first shift start, with grace)
+      if(a.checkin){
+        var checkinMin=timeToMin(a.checkin);
+        var lateMins=checkinMin-schedStartMin;
+        if(lateMins>GRACE_MINUTES){
+          a.lateMin=lateMins;
+          totalLate+=lateMins;
+          lateCount++;
         }
-    });
-    if(report.length===0){console.log('Chưa có dữ liệu thiết bị.');return;}
-    console.table(report);
-    console.log('\n⚠️ NV có nhiều thiết bị:');
-    report.filter(function(r){return r['Số thiết bị']>1;}).forEach(function(r){
-        console.log('  → '+r.NV+': '+r['Số thiết bị']+' thiết bị');
-    });
-    return report;
-}
-// Gõ: clearDeviceHistory('NV001') để xóa lịch sử thiết bị của 1 NV
-function clearDeviceHistory(empId){
-    localStorage.removeItem('qg_cc_devhist_'+empId);
-    console.log('Đã xóa lịch sử thiết bị của '+empId);
+      }
+      // Early leave check (checkout vs last shift end)
+      if(a.checkout){
+        var checkoutMin=timeToMin(a.checkout);
+        var earlyMins=schedEndMin-checkoutMin;
+        if(earlyMins>GRACE_MINUTES){
+          a.earlyMin=earlyMins;
+          earlyLeaveCount++;
+        }
+      }
+      // OT: actual hours - scheduled hours
+      if(hrs>schedHours){
+        a.otMin=Math.round((hrs-schedHours)*60);
+        totalOT+=(hrs-schedHours);
+      }
+      a.schedStart=schedStarts[0];
+      a.schedEnd=schedEnds[schedEnds.length-1];
+      a.schedHours=schedHours;
+    }
+  });
+  
+  // Summary cards
+  var h='<div class="att-summary">';
+  h+='<div class="att-summary-card"><div class="att-s-value">'+workDays+'</div><div class="att-s-label">Ngày đi làm</div></div>';
+  h+='<div class="att-summary-card"><div class="att-s-value">'+totalH.toFixed(1)+'h</div><div class="att-s-label">Tổng giờ thực</div></div>';
+  if(totalOT>0){
+    h+='<div class="att-summary-card" style="border-color:#ff9800"><div class="att-s-value" style="color:#e65100">'+totalOT.toFixed(1)+'h</div><div class="att-s-label">Tăng ca</div></div>';
+  }else{
+    h+='<div class="att-summary-card"><div class="att-s-value" style="color:#2e7d32">0</div><div class="att-s-label">Tăng ca</div></div>';
+  }
+  h+='</div>';
+  
+  if(lateCount>0){
+    h+='<div style="background:#fff3e0;border:1px solid #ffe082;border-radius:8px;padding:8px 12px;margin-bottom:10px;font-size:12px;color:#e65100"><i class="fas fa-exclamation-triangle"></i> Trễ <b>'+lateCount+'</b> lần, tổng <b>'+totalLate+'</b> phút</div>';
+  }
+  
+  // Table
+  h+='<div style="overflow-x:auto"><table class="att-table"><thead><tr>';
+  h+='<th>Ngày</th><th>Thứ</th><th>Lịch làm</th><th><i class="fas fa-sign-in-alt"></i> Vào</th><th><i class="fas fa-sign-out-alt"></i> Ra</th><th>Giờ</th><th>Ghi chú</th>';
+  h+='</tr></thead><tbody>';
+  
+  var dayNamesShort=['CN','T2','T3','T4','T5','T6','T7'];
+  
+  attendance.forEach(function(a){
+    var dayNum=a.day;
+    var d=new Date(year,mon-1,dayNum);
+    var dw=d.getDay();
+    var isWE=dw===0||dw===6;
+    var hrs=parseFloat(a.hours)||0;
+    
+    h+='<tr class="'+(isWE?'weekend-row':'')+'">';
+    h+='<td class="day-col">'+dayNum+'/'+mon+'</td>';
+    h+='<td style="font-size:11px;color:'+(isWE?'#c62828':'#666')+'">'+dayNamesShort[dw]+'</td>';
+    
+    // Scheduled shift
+    if(a.schedStart){
+      h+='<td style="font-size:10px;color:#1565c0;font-weight:600">'+a.schedStart+'-'+a.schedEnd+'</td>';
+    }else{
+      h+='<td class="no-data-cell" style="font-size:10px">-</td>';
+    }
+    
+    // Checkin with late badge
+    if(a.checkin){
+      var cinHtml='<span class="time-in">'+a.checkin+'</span>';
+      if(a.lateMin){
+        cinHtml+=' <span style="background:#ffebee;color:#c62828;padding:1px 5px;border-radius:4px;font-size:9px;font-weight:700">Trễ '+a.lateMin+'p</span>';
+      }
+      h+='<td>'+cinHtml+'</td>';
+    }else{
+      h+='<td class="no-data-cell">-</td>';
+    }
+    
+    // Checkout with early leave badge
+    if(a.checkout){
+      var coutHtml='<span class="time-out">'+a.checkout+'</span>';
+      if(a.earlyMin){
+        coutHtml+=' <span style="background:#fff3e0;color:#e65100;padding:1px 5px;border-radius:4px;font-size:9px;font-weight:700">Sớm '+a.earlyMin+'p</span>';
+      }
+      h+='<td>'+coutHtml+'</td>';
+    }else{
+      h+='<td class="no-data-cell">-</td>';
+    }
+    
+    // Hours
+    if(hrs>0){
+      h+='<td class="hours-col">'+hrs.toFixed(1)+'</td>';
+    }else{
+      h+='<td class="no-data-cell">-</td>';
+    }
+    
+    // Notes (OT, late summary)
+    var notes=[];
+    if(a.otMin&&a.otMin>0) notes.push('<span style="background:#e8f5e9;color:#2e7d32;padding:1px 5px;border-radius:4px;font-size:9px;font-weight:700">OT +'+a.otMin+'p</span>');
+    h+='<td>'+notes.join(' ')+'</td>';
+    
+    h+='</tr>';
+  });
+  
+  h+='<tr class="total-row">';
+  h+='<td colspan="3"><i class="fas fa-calculator"></i> Tổng cộng</td>';
+  h+='<td></td><td></td>';
+  h+='<td>'+totalH.toFixed(1)+'h</td>';
+  h+='<td>'+(totalOT>0?'OT: '+totalOT.toFixed(1)+'h':'')+'</td>';
+  h+='</tr>';
+  h+='</tbody></table></div>';
+  
+  document.getElementById('attendanceContent').innerHTML=h;
 }
 
-// ===== RESET DEVICE LOCK (dùng khi test hoặc boss cần mở khóa) =====
-function resetDeviceLock(){
-    var did=getDeviceId();
-    localStorage.removeItem('qg_cc_devlock_'+did);
-    // old key cleanup
-    localStorage.removeItem('qg_cc_lastaction_'+did);
-    localStorage.removeItem('qg_cc_lastcheckin_'+did);
-    checkedInToday=false;
-    updateDeviceLockBar();
-    updateButtons();
-    showStatus('info','Đã mở khóa thiết bị! Có thể đăng nhập tài khoản khác.');
+// ===== TAB 4: BẢNG LƯƠNG =====
+var _payrollData=null;var _payrollAtt=null;var _currentPayTab='chamcong';var _payAttReqId=0;
+function switchPayTab(tab){
+  _currentPayTab=tab;
+  document.querySelectorAll('.pay-sub-tab').forEach(function(b){b.classList.remove('active');b.style.color='#999';b.style.borderBottomColor='transparent';});
+  var btn=tab==='chamcong'?document.getElementById('payTabCC'):document.getElementById('payTabCT');
+  btn.classList.add('active');btn.style.color='var(--primary)';btn.style.borderBottomColor='var(--primary)';
+  renderPayrollTab();
+}
+function renderPayrollTab(){
+  if(!_payrollData)return;
+  var el=document.getElementById('payrollContent');
+  if(_currentPayTab==='chamcong') renderPayAttendance(el);
+  else { _payAttReqId++; renderPayDetail(el); }
+}
+function renderPayAttendance(el){
+  var month=document.getElementById('payMonth').value;
+  var myReqId=++_payAttReqId;
+  apiCall({action:'getAttendance',empId:currentUser.empId,month:month},function(res){
+    if(myReqId!==_payAttReqId)return; // stale callback, ignore
+    if(!res.success||!res.attendance||res.attendance.length===0){
+      el.innerHTML='<div class="no-data"><i class="fas fa-clipboard-list"></i>Chưa có dữ liệu chấm công.</div>';return;
+    }
+    var att=res.attendance;var parts=month.split('-');var y=parseInt(parts[0]),m=parseInt(parts[1]);
+    var daysInMonth=new Date(y,m,0).getDate();
+    var detail=null;try{detail=JSON.parse(_payrollData['_detail']||'null');}catch(e){}
+    var empName=currentUser.name||'';var empNameCN='';var empPos='';var empId=currentUser.empId||'';
+    if(detail){empName=detail.name||empName;empNameCN=detail.nameCN||'';empPos=detail.position||'';empId=detail.dept?empPos+' ('+empId+')':empPos+' ('+empId+')';}
+    // Build day map
+    var dayMap={};var totalNC=0,totalLE=0;
+    att.forEach(function(a){var d=parseInt(a.day);dayMap[d]=a;totalNC+=(parseFloat(a.nc)||0);totalLE+=(parseFloat(a.le)||0);});
+    var dn=['CN','T2','T3','T4','T5','T6','T7'];
+    var h='<div id="payAttCapture" style="background:white;padding:12px">';
+    h+='<div style="text-align:center;font-weight:800;font-size:15px;color:var(--success);margin-bottom:2px"><i class="fas fa-clipboard-list"></i> BẢNG CHẤM CÔNG THÁNG '+m+'/'+y+' 考勤表</div>';
+    h+='<div style="text-align:center;font-size:13px;font-weight:700;margin-bottom:10px">'+empName+(empNameCN?' '+empNameCN:'')+' — '+empId+'</div>';
+    h+='<table class="att-table" style="width:100%"><thead><tr>';
+    h+='<th style="min-width:36px">Ngày<br>日</th><th>Thứ<br>曜</th><th style="color:#90caf9">NC 工時</th><th style="color:#ffcc80">Lễ 假日</th>';
+    h+='</tr></thead><tbody>';
+    for(var d=1;d<=daysInMonth;d++){
+      var dt=new Date(y,m-1,d);var dow=dt.getDay();var dayLabel=dn[dow];
+      var isWE=dow===0||dow===6;
+      var a=dayMap[d];
+      var ncH=a?parseFloat(a.nc)||0:0;
+      var leH=a?parseFloat(a.le)||0:0;
+      var rowClass=isWE?'weekend-row':'';
+      h+='<tr class="'+rowClass+'">';
+      h+='<td class="day-col" style="'+(isWE?'color:var(--danger)':'')+'"><b>'+d+'</b></td>';
+      h+='<td style="font-size:11px;'+(isWE?'color:var(--danger);font-weight:700':'color:#888')+'">'+dayLabel+'</td>';
+      h+='<td class="nc-col">'+(ncH>0?'<b>'+ncH+'</b>':'')+'</td>';
+      h+='<td style="color:var(--danger);font-weight:700">'+(leH>0?'<b>'+leH+'</b>':'')+'</td>';
+      h+='</tr>';
+    }
+    // Total row
+    h+='<tr class="total-row"><td colspan="2" style="text-align:center;font-size:13px"><b>Tổng 合計</b></td>';
+    h+='<td style="font-size:15px"><b>'+totalNC+'</b></td>';
+    h+='<td style="font-size:15px;color:var(--danger)"><b>'+totalLE+'</b></td></tr>';
+    h+='</tbody></table>';
+    // Summary line
+    var isFT=detail&&detail.type==='Fulltime';
+    var ncLabel=isFT?parseFloat((totalNC/(detail?detail.effectiveHours||9:9)).toFixed(2))+' ngày':totalNC+'h';
+    var leLabel=totalLE>0?(isFT?'Lễ: '+(totalLE/(detail?detail.effectiveHours||9:9)).toFixed(0)+' ngày':'Lễ: '+totalLE+'h'):'';
+    h+='<div style="padding:8px 4px;font-size:13px;font-weight:700;color:#555"><b>Tổng công:</b> '+ncLabel+(leLabel?'&nbsp;&nbsp;&nbsp;'+leLabel:'')+'</div>';
+    h+='</div>';
+    el.innerHTML=h;
+  });
+}
+function renderPayDetail(el){
+  var p=_payrollData;var detail=null;
+  try{detail=JSON.parse(p['_detail']||'null');}catch(e){}
+  var month=document.getElementById('payMonth').value;var parts=month.split('-');var m=parseInt(parts[1]),y=parseInt(parts[0]);
+  var fc=function(n){if(!n)return'0';return new Intl.NumberFormat('vi-VN').format(Math.round(n));};
+  var h='<div id="payDetailCapture" style="background:white;padding:12px">';
+  if(detail){
+    var isFT=detail.type==='Fulltime';
+    h+='<div style="text-align:center;font-weight:800;font-size:15px;color:#1a237e;margin-bottom:2px">CHI TIẾT LƯƠNG THÁNG '+m+'/'+y+' 薪資明細</div>';
+    h+='<div style="text-align:center;font-size:13px;font-weight:700;margin-bottom:2px">'+detail.name+(detail.nameCN?' '+detail.nameCN:'')+' — '+detail.position+' ('+currentUser.empId+')</div>';
+    if(detail.startDate)h+='<div style="text-align:center;font-size:11px;color:#888;margin-bottom:10px">Vào: '+detail.startDate+' | '+detail.type+' | '+detail.dept+'</div>';
+    // THU NHẬP
+    h+='<div style="background:linear-gradient(135deg,#283593,#1a237e);color:white;padding:8px 12px;font-weight:800;font-size:13px;border-radius:6px 6px 0 0;margin-top:8px"><i class="fas fa-coins"></i> THU NHẬP 收入</div>';
+    h+='<table style="width:100%;border-collapse:collapse;font-size:13px">';
+    h+='<tr><td style="padding:8px 12px;border-bottom:1px solid #eee">Lương cơ bản <span style="font-size:10px;color:#888">基本薪資</span></td><td style="padding:8px 12px;text-align:right;font-weight:700;border-bottom:1px solid #eee">'+fc(detail.baseSalary)+'</td></tr>';
+    if(detail.respAllowance)h+='<tr><td style="padding:8px 12px;border-bottom:1px solid #eee">PC Trách nhiệm <span style="font-size:10px;color:#888">責任津貼</span></td><td style="padding:8px 12px;text-align:right;font-weight:700;border-bottom:1px solid #eee">'+fc(detail.respAllowance)+'</td></tr>';
+    if(detail.attAllowance)h+='<tr><td style="padding:8px 12px;border-bottom:1px solid #eee">PC Chuyên cần <span style="font-size:10px;color:#888">全勤津貼</span></td><td style="padding:8px 12px;text-align:right;font-weight:700;border-bottom:1px solid #eee">'+fc(detail.attAllowance)+'</td></tr>';
+    if(detail.otherAllowance)h+='<tr><td style="padding:8px 12px;border-bottom:1px solid #eee">PC Khác <span style="font-size:10px;color:#888">其他津貼</span></td><td style="padding:8px 12px;text-align:right;font-weight:700;border-bottom:1px solid #eee">'+fc(detail.otherAllowance)+'</td></tr>';
+    h+='<tr style="background:#e8eaf6"><td style="padding:8px 12px;font-weight:800">Tổng thu nhập <span style="font-size:10px;color:#888">總收入</span></td><td style="padding:8px 12px;text-align:right;font-weight:800;color:#1a237e">'+fc(detail.totalIncome)+'</td></tr>';
+    h+='</table>';
+    // NGÀY CÔNG & TIỀN CÔNG
+    h+='<div style="background:linear-gradient(135deg,#e65100,#bf360c);color:white;padding:8px 12px;font-weight:800;font-size:13px;margin-top:12px;border-radius:6px 6px 0 0"><i class="fas fa-calendar-check"></i> NGÀY CÔNG & TIỀN CÔNG 工時與工資</div>';
+    h+='<table style="width:100%;border-collapse:collapse;font-size:13px">';
+    var dayLabel=isFT?detail.actualDays+' / '+detail.stdDays:parseFloat(detail.actualDays).toFixed(1)+'h';
+    h+='<tr><td style="padding:8px 12px;border-bottom:1px solid #eee">Ngày công thực tế <span style="font-size:10px;color:#888">實際工作天</span></td><td style="padding:8px 12px;text-align:right;font-weight:800;color:var(--success);border-bottom:1px solid #eee">'+dayLabel+'</td></tr>';
+    h+='<tr><td style="padding:8px 12px;font-weight:700;border-bottom:1px solid #eee">Tiền công tháng <span style="font-size:10px;color:#888">月工資</span></td><td style="padding:8px 12px;text-align:right;font-weight:800;border-bottom:1px solid #eee">'+fc(detail.monthlyWage)+'</td></tr>';
+    h+='<tr><td style="padding:8px 12px;border-bottom:1px solid #eee;color:#888">Tăng ca <span style="font-size:10px">加班</span></td><td style="padding:8px 12px;text-align:right;color:#888;border-bottom:1px solid #eee">'+detail.otHours+' giờ</td></tr>';
+    // Holiday details
+    var holDetails=detail.holDetails||[];
+    if(holDetails.length>0){
+      var holStr=holDetails.map(function(hd){return'Ngày '+hd.day+' ('+parseFloat(hd.hrs/(detail.effectiveHours||9)).toFixed(2)+' ngày x'+hd.mul+')';}).join(' , ');
+      h+='<tr><td style="padding:8px 12px;border-bottom:1px solid #eee;color:var(--danger)">Ngày lễ <span style="font-size:10px">節日</span></td><td style="padding:8px 12px;text-align:right;font-size:11px;color:var(--danger);border-bottom:1px solid #eee">'+holStr+'</td></tr>';
+    }
+    if(detail.holPay)h+='<tr><td style="padding:8px 12px;font-weight:700;border-bottom:1px solid #eee;color:var(--danger)">Tiền lễ <span style="font-size:10px">節日費</span></td><td style="padding:8px 12px;text-align:right;font-weight:800;color:var(--danger);border-bottom:1px solid #eee">'+fc(detail.holPay)+'</td></tr>';
+    h+='</table>';
+    // THƯỞNG
+    h+='<div style="background:linear-gradient(135deg,#f57f17,#e65100);color:white;padding:8px 12px;font-weight:800;font-size:13px;margin-top:12px;border-radius:6px 6px 0 0"><i class="fas fa-gift"></i> THƯỞNG 獎金</div>';
+    var bonusItems=detail.bonusItems||[];
+    if(bonusItems.length>0){
+      h+='<table style="width:100%;border-collapse:collapse;font-size:13px">';
+      bonusItems.forEach(function(b){h+='<tr><td style="padding:8px 12px;border-bottom:1px solid #eee">'+(b.name||'Thưởng')+'</td><td style="padding:8px 12px;text-align:right;font-weight:700;border-bottom:1px solid #eee">'+fc(b.amount)+'</td></tr>';});
+      h+='</table>';
+    } else h+='<div style="text-align:center;padding:10px;color:#ccc;font-size:13px">Không có</div>';
+    // PHẠT/TRỪ
+    h+='<div style="background:linear-gradient(135deg,#37474f,#263238);color:white;padding:8px 12px;font-weight:800;font-size:13px;margin-top:12px;border-radius:6px 6px 0 0"><i class="fas fa-minus-circle"></i> PHẠT / TRỪ 扣款</div>';
+    var deductItems=detail.deductItems||[];
+    if(deductItems.length>0){
+      h+='<table style="width:100%;border-collapse:collapse;font-size:13px">';
+      deductItems.forEach(function(d){h+='<tr><td style="padding:8px 12px;border-bottom:1px solid #eee">'+(d.name||'Trừ')+'</td><td style="padding:8px 12px;text-align:right;font-weight:700;color:var(--danger);border-bottom:1px solid #eee">- '+fc(d.amount)+'</td></tr>';});
+      h+='</table>';
+    } else h+='<div style="text-align:center;padding:10px;color:#ccc;font-size:13px">Không có</div>';
+    // KHOẢN KHÁC
+    if(detail.otherItems&&detail.otherItems.length>0){
+      h+='<div style="background:linear-gradient(135deg,#455a64,#37474f);color:white;padding:8px 12px;font-weight:800;font-size:13px;margin-top:12px;border-radius:6px 6px 0 0"><i class="fas fa-exchange-alt"></i> KHOẢN KHÁC 其他項目</div>';
+      h+='<table style="width:100%;border-collapse:collapse;font-size:13px">';
+      detail.otherItems.forEach(function(o){h+='<tr><td style="padding:8px 12px;border-bottom:1px solid #eee">'+(o.name||'Khác')+'</td><td style="padding:8px 12px;text-align:right;font-weight:700;border-bottom:1px solid #eee">'+fc(o.amount)+'</td></tr>';});
+      h+='</table>';
+    }
+    // TỔNG KẾT
+    h+='<div style="background:linear-gradient(135deg,#1b5e20,#2e7d32);color:white;padding:8px 12px;font-weight:800;font-size:13px;margin-top:12px;border-radius:6px 6px 0 0"><i class="fas fa-calculator"></i> TỔNG KẾT 合計</div>';
+    h+='<table style="width:100%;border-collapse:collapse;font-size:13px">';
+    h+='<tr><td style="padding:8px 12px;border-bottom:1px solid #eee">Tiền công <span style="font-size:10px;color:#888">工資</span></td><td style="padding:8px 12px;text-align:right;font-weight:700;border-bottom:1px solid #eee">'+fc(detail.monthlyWage)+'</td></tr>';
+    h+='<tr><td style="padding:8px 12px;border-bottom:1px solid #eee">Tăng ca <span style="font-size:10px;color:#888">加班費</span></td><td style="padding:8px 12px;text-align:right;font-weight:700;color:var(--info);border-bottom:1px solid #eee">'+fc(detail.otPay)+'</td></tr>';
+    h+='<tr><td style="padding:8px 12px;border-bottom:1px solid #eee">Tiền lễ <span style="font-size:10px;color:#888">節日費</span></td><td style="padding:8px 12px;text-align:right;font-weight:700;color:var(--danger);border-bottom:1px solid #eee">'+fc(detail.holPay)+'</td></tr>';
+    h+='<tr><td style="padding:8px 12px;border-bottom:1px solid #eee">Thưởng <span style="font-size:10px;color:#888">獎金</span></td><td style="padding:8px 12px;text-align:right;font-weight:700;border-bottom:1px solid #eee">'+fc(detail.totalBonus)+'</td></tr>';
+    h+='<tr><td style="padding:8px 12px;border-bottom:1px solid #eee">Phạt/Trừ <span style="font-size:10px;color:#888">扣款</span></td><td style="padding:8px 12px;text-align:right;font-weight:700;color:var(--danger);border-bottom:1px solid #eee">- '+fc(detail.totalDeduct)+'</td></tr>';
+    h+='<tr style="background:linear-gradient(135deg,#e8f5e9,#c8e6c9)"><td style="padding:12px;font-weight:900;font-size:15px"><i class="fas fa-hand-holding-usd"></i> THỰC LÃNH <span style="font-size:10px;color:#888">實領</span></td><td style="padding:12px;text-align:right;font-weight:900;font-size:18px;color:var(--success)">'+fc(detail.netPay)+'</td></tr>';
+    h+='</table>';
+  } else {
+    // Fallback: simple field list
+    var fields=['Tổng giờ NC','Tổng giờ OT','Tổng giờ Lễ','Lương NC','Lương OT','Lương Lễ','Phụ cấp','Thưởng','Khấu trừ','THỰC LÃNH'];
+    h+='<div style="padding:8px">';
+    fields.forEach(function(f){
+      var val=p[f]||'0';var isHL=f==='THỰC LÃNH';
+      h+='<div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #eee;'+(isHL?'font-weight:700;font-size:16px;color:var(--success);border-top:2px solid var(--success);margin-top:4px':'')+'"><span>'+f+'</span><span>'+val+'</span></div>';
+    });
+    h+='</div>';
+  }
+  h+='</div>';
+  el.innerHTML=h;
+}
+function downloadPayrollImage(){
+  var captureId=_currentPayTab==='chamcong'?'payAttCapture':'payDetailCapture';
+  var el=document.getElementById(captureId);
+  if(!el){showToast('Chưa có dữ liệu để tải','error');return;}
+  var month=document.getElementById('payMonth').value;
+  var label=_currentPayTab==='chamcong'?'ChamCong':'ChiTietLuong';
+  html2canvas(el,{scale:2,backgroundColor:'#ffffff',useCORS:true,width:el.scrollWidth,height:el.scrollHeight,scrollX:0,scrollY:0,windowWidth:el.scrollWidth+40}).then(function(canvas){
+    var link=document.createElement('a');
+    link.download='BangLuong_'+label+'_'+(currentUser.empId||'')+'_'+month+'.png';
+    link.href=canvas.toDataURL('image/png');
+    link.click();
+    showToast('Đã tải ảnh thành công','success');
+  }).catch(function(e){showToast('Lỗi tải ảnh: '+e.message,'error');});
 }
 
-// ===== INIT =====
-document.addEventListener('DOMContentLoaded',function(){
-    document.getElementById('loginCode').addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();doLogin();}});
-    // Load employees from Google Sheet then auto-login
-    loadEmployeesFromSheet(function(){
-        autoLogin();
-    });
-});
+function loadPayroll(){
+  var sel=document.getElementById('payMonth');
+  if(!sel)return;
+  var month=sel.value;
+  if(!month){
+    document.getElementById('payrollContent').innerHTML='<div class="no-data"><i class="fas fa-file-invoice-dollar"></i>Vui lòng chọn tháng</div>';
+    return;
+  }
+  document.getElementById('payrollContent').innerHTML='<div style="text-align:center;padding:30px;color:#999"><i class="fas fa-spinner fa-spin"></i> Đang tải...</div>';
+  
+  apiCall({action:'getPayroll',empId:currentUser.empId,month:month},function(res){
+    if(!res.success){
+      document.getElementById('payrollContent').innerHTML='<div class="no-data" style="color:var(--danger)">'+res.error+'</div>';
+      return;
+    }
+    if(!res.published||!res.payroll){
+      document.getElementById('payrollContent').innerHTML='<div class="no-data"><i class="fas fa-lock" style="font-size:24px;margin-bottom:8px;display:block"></i>Bảng lương tháng '+month+' chưa được phát 薪資尚未發佈</div>';
+      document.getElementById('payrollSubTabs').style.display='none';
+      document.getElementById('payDownloadBtn').style.display='none';
+      return;
+    }
+    _payrollData=res.payroll;
+    document.getElementById('payrollStatus').textContent='Đã phát 已發';
+    document.getElementById('payrollStatus').className='status-badge status-published';
+    // Show sub-tabs and download button
+    document.getElementById('payrollSubTabs').style.display='flex';
+    document.getElementById('payDownloadBtn').style.display='';
+    // Reset to chamcong tab
+    _currentPayTab='chamcong';
+    document.querySelectorAll('.pay-sub-tab').forEach(function(b){b.classList.remove('active');b.style.color='#999';b.style.borderBottomColor='transparent';});
+    var ccBtn=document.getElementById('payTabCC');
+    if(ccBtn){ccBtn.classList.add('active');ccBtn.style.color='var(--primary)';ccBtn.style.borderBottomColor='var(--primary)';}
+    renderPayrollTab();
+  });
+}
+
+// Auto-init
+restoreSavedLogin();
+
 </script>
 </body>
 </html>
